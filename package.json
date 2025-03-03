@@ -1,9 +1,11 @@
 {
   "name": "tweakai-backend",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "NODE_ENV=development bun run --hot src/index.ts",
+    "prod": "NODE_ENV=production bun run --hot src/index.ts"
   },
   "dependencies": {
+    "dotenv": "^16.4.7",
     "hono": "^4.7.2"
   },
   "devDependencies": {
