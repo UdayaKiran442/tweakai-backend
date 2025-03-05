@@ -1,0 +1,23 @@
+name: Docker Image CI
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    
+    - name: Build the Docker image
+      run: docker build . --target production --file Dockerfile --tag udayagonuguntla/tweakai-prod:prod
+    
+    - name: Push Docker image to Docker Hub
+      run: docker push udayagonuguntla/tweakai-prod:prod
