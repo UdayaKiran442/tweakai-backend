@@ -6,7 +6,7 @@ const app = new Hono()
 const env = ActiveConfig.ENV
 
 app.get('/', (c) => {
-  return c.text(`Hello Hono!`)
+  return c.text(`Hello Hono! Welcome to TweakAI. Running in ${env} environment`)
 })
 
 app.get('/health-check', (c) => {
