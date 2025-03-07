@@ -3,9 +3,14 @@ import { ActiveConfig } from './utils/config.utils'
 
 const app = new Hono()
 
+const env = ActiveConfig.ENV
+
 app.get('/', (c) => {
-  const env = ActiveConfig.ENV
-  return c.text(`Hello Hono! ENV: ${env}`)
+  return c.text(`Hello Hono!`)
+})
+
+app.get('/health-check', (c) => {
+  return c.text(`Server is healthy and running in ${env} environment`)
 })
 
 export default app

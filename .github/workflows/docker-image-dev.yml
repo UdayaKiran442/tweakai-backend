@@ -1,9 +1,9 @@
-name: Docker Image CI Production
+name: Docker Image CI Development
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "development" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "development" ]
 jobs:
   build-and-push:
     runs-on: ubuntu-24.04-arm
@@ -22,7 +22,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     
     - name: Build the Docker image
-      run: docker build --platform linux/arm64 . --target production --file Dockerfile --tag udayagonuguntla/tweakai-prod:prod
+      run: docker build --platform linux/arm64 . --target development --file Dockerfile --tag udayagonuguntla/tweakai-dev:dev
     
     - name: Push Docker image to Docker Hub
-      run: docker push udayagonuguntla/tweakai-prod:prod
+      run: docker push udayagonuguntla/tweakai-dev:dev
