@@ -22,7 +22,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     
     - name: Build the Docker image
-      run: docker build --platform linux/arm64 . --target development --file Dockerfile --tag udayagonuguntla/tweakai-dev:dev
+      run: docker build . --target development --file Dockerfile --tag udayagonuguntla/tweakai-dev:dev
     
     - name: Push Docker image to Docker Hub
       run: docker push udayagonuguntla/tweakai-dev:dev
