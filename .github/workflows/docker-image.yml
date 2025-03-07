@@ -1,12 +1,12 @@
 name: Docker Image CI Development
 on:
   push:
-    branches: [ "development" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "development" ]
+    branches: [ "main" ]
 jobs:
   build-and-push:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     
@@ -22,7 +22,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     
     - name: Build the Docker image
-      run: docker build --target development -t udayagonuguntla/tweakai-dev:dev .
+      run: docker build --target development -t udayagonuguntla/demo:latest .
     
     - name: Push Docker image to Docker Hub
-      run: docker push udayagonuguntla/tweakai-dev:dev
+      run: docker push udayagonuguntla/demo:latest
