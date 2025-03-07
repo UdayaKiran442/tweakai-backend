@@ -6,7 +6,7 @@ const app = new Hono()
 const env = ActiveConfig.ENV
 
 app.get('/', (c) => {
-  return c.text(`Hello Hono! Running in ${env} environment`)
+  return c.text(`Hello Hono!`)
 })
 
 app.get('/health-check', (c) => {
