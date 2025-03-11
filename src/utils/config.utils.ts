@@ -10,4 +10,5 @@ if (environment === 'development') {
 export const ActiveConfig = {
     NODE_ENV: environment!,
     ENV: process.env.ENV!,
+    DATABASE_URL: process.env.DATABASE_URL!,
 }
