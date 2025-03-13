@@ -1,5 +1,7 @@
 import { findUserByEmailInDb, registerUserInDb } from "../../repository/auth/auth.repository";
 import { IUserSchema } from "../../routes/auth/auth.router";
+import { FindUserByEmailInDBError, LoginUserError, RegisterUserInDBError } from "../../exceptions/auth.exceptions";
+import { LOGIN_USER_ERROR } from "../../constants/error.constants";
 
 export async function loginUser(payload: IUserSchema) {
     try {
@@ -12,6 +14,9 @@ export async function loginUser(payload: IUserSchema) {
         // else register user and save to db, return new registered user
         return await registerUserInDb(payload);
     } catch (error) {
-        
+        if(error instanceof FindUserByEmailInDBError || error instanceof RegisterUserInDBError) {
+            throw error;
+        }
+        throw new LoginUserError(LOGIN_USER_ERROR.message, LOGIN_USER_ERROR.errorCode, LOGIN_USER_ERROR.statusCode)
     }
 }

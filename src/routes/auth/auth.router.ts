@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { z } from "zod";
 import { loginUser } from "../../controllers/auth/auth.controller";
+import { FindUserByEmailInDBError, LoginUserError, RegisterUserInDBError } from "../../exceptions/auth.exceptions";
 
 const authRouter = new Hono();
 
@@ -17,10 +18,12 @@ authRouter.post("/login", async (c) => {
     try {
         const payload = await c.req.json() as IUserSchema; 
         const user = await loginUser(payload);
-        console.log("🚀 ~ authRouter.post ~ user:", user)
         return c.json({ message: "Login successful", user });
     } catch (error) {
-        console.log("🚀 ~ authRouter.post ~ error:", error)
+        if(error instanceof LoginUserError || error instanceof RegisterUserInDBError || error instanceof FindUserByEmailInDBError) {
+            return c.json({ message: error.message, errorCode: error.errorCode, statusCode: error.statusCode });
+        }
+        return c.json({ message: "Internal server error" }, 500);
     }
 })
 
