@@ -12,15 +12,18 @@ const UserSchema = z.object({
     phone: z.string().nullish().describe("Phone number of the user"),
 })
 
-export type IUserSchema = z.infer<typeof UserSchema> & { userId: string };
+export type IUserSchema = z.infer<typeof UserSchema> & { userId?: string };
 
 authRouter.post("/login", async (c) => {
-    try {
-        const payload = await c.req.json() as IUserSchema; 
+    try { 
+        const payload = UserSchema.parse(await c.req.json()); // Validate payload
         const user = await loginUser(payload);
         return c.json({ message: "Login successful", user });
     } catch (error) {
-        if(error instanceof LoginUserError || error instanceof RegisterUserInDBError || error instanceof FindUserByEmailInDBError) {
+        if (error instanceof z.ZodError) {
+            return c.json({ message: "Validation error", errors: error.errors }, 400);
+        }
+        if (error instanceof LoginUserError || error instanceof RegisterUserInDBError || error instanceof FindUserByEmailInDBError) {
             return c.json({ message: error.message, errorCode: error.errorCode, statusCode: error.statusCode });
         }
         return c.json({ message: "Internal server error" }, 500);
