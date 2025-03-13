@@ -43,3 +43,9 @@ open http://localhost:3000
 - CHORE: code clean up and build 
 - FIX: bug preventing users from submitting the subscribe form
 - INIT: Only for first commit and project setup
+
+# Migration Script for running drizzle schemas
+```sh
+npx drizzle-kit generate
+
+```

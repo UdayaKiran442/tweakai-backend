@@ -1,9 +1,15 @@
 import { Hono } from 'hono'
-import { ActiveConfig } from './utils/config.utils'
+import { prettyJSON } from "hono/pretty-json";
 
+import authRouter from './routes/auth/auth.router'
+import { ActiveConfig } from './utils/config.utils'
 const app = new Hono()
 
 const env = ActiveConfig.ENV
+
+app.use(prettyJSON())
+
+app.route("/auth", authRouter)
 
 app.get('/', (c) => {
   return c.text(`Hello Hono! Welcome to TweakAI. Running in ${env} environment`)
