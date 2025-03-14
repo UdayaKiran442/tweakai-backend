@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { createDataset } from "../../controllers/datasets/datasets.controller";
-import { CreateDatasetInDBError } from "../../exceptions/datasets.exceptions";
+import { createDataset, fetchAllDatasets } from "../../controllers/datasets/datasets.controller";
+import { CreateDatasetInDBError, FetchAllDatasetsError, FetchAllDatasetsFromDBError } from "../../exceptions/datasets.exceptions";
 import { CreateDatasetError } from "../../exceptions/datasets.exceptions";
 
 const datasetsRoute = new Hono()
@@ -32,8 +32,17 @@ datasetsRoute.post("/create", async (c) => {
     }
 })
 
-datasetsRoute.get("/fetch/all", (c) => {
-    return c.json({ message: "Get datasets" })
+datasetsRoute.get("/fetch/all", async (c) => {
+    try {
+        const userId = "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+        const datasets = await fetchAllDatasets(userId);
+        return c.json({ message: "Get datasets", datasets });
+    } catch (error) {
+        if (error instanceof FetchAllDatasetsError || error instanceof FetchAllDatasetsFromDBError) {
+            return c.json({ message: error.message, errorCode: error.errorCode, statusCode: error.statusCode });
+        }
+        return c.json({ message: "Internal server error" }, 500);
+    }
 })
 
 datasetsRoute.post("/fetch", (c) => {

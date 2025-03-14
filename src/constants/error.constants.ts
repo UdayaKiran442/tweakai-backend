@@ -6,3 +6,5 @@ export const LOGIN_USER_ERROR = { message: 'Error logging user in', errorCode: '
 // datasets route
 export const CREATE_DATASET_IN_DB_ERROR = { message: 'Error creating dataset in database', errorCode: 'DATASET_101', statusCode: 500 };
 export const CREATE_DATASET_ERROR = { message: 'Error creating dataset', errorCode: 'DATASET_102', statusCode: 500 };
+export const FETCH_ALL_DATASETS_FROM_DB_ERROR = { message: 'Error fetching all datasets from database', errorCode: 'DATASET_103', statusCode: 500 };
+export const FETCH_ALL_DATASETS_ERROR = { message: 'Error fetching all datasets', errorCode: 'DATASET_104', statusCode: 500 };
