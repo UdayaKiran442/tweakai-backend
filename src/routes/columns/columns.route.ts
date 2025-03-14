@@ -1,4 +1,4 @@
-import { Hono } from "hono/dist/types/hono"
+import { Hono } from "hono"
 
 const columnsRoute = new Hono()
 
