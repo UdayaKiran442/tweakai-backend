@@ -11,14 +11,20 @@ const CreateDatasetSchema = z.object({
     name: z.string().min(1).max(256).describe("Name of the dataset"),
     template: z.enum(["seo", "linkedin", "instagram"]).describe("Template of the dataset"),
     description: z.string().nullish().describe("Description of the dataset"),
-    userId: z.string().describe("User ID of the dataset")
-})
+}).strict()
 
 export type ICreateDatasetSchema = z.infer<typeof CreateDatasetSchema>
 
 datasetsRoute.post("/create", async (c) => {
     try {
-        const payload = CreateDatasetSchema.parse(await c.req.json());
+        const validation = CreateDatasetSchema.safeParse(await c.req.json());
+        if(!validation.success) {
+            throw validation.error
+        }
+        const payload = {
+            ...validation.data,
+            userId: "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+        }
         const dataset = await createDataset(payload);
         return c.json({ message: "Dataset created successfully", dataset })
     } catch (error) {
