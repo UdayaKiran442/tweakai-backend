@@ -13,7 +13,7 @@ const CreateDatasetSchema = z.object({
     description: z.string().nullish().describe("Description of the dataset"),
 }).strict()
 
-export type ICreateDatasetSchema = z.infer<typeof CreateDatasetSchema>
+export type ICreateDatasetSchema = z.infer<typeof CreateDatasetSchema> & { userId: string }
 
 datasetsRoute.post("/create", async (c) => {
     try {
