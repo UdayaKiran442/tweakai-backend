@@ -12,3 +12,7 @@ export const FETCH_ALL_DATASETS_ERROR = { message: 'Error fetching all datasets'
 // columns route
 export const ADD_COLUMN_TO_DATASET_IN_DB_ERROR = { message: 'Error adding column to dataset in database', errorCode: 'COLUMN_101', statusCode: 500 };
 export const ADD_COLUMN_TO_DATASET_ERROR = { message: 'Error adding column to dataset', errorCode: 'COLUMN_102', statusCode: 500 };
+
+// rows route
+export const ADD_ROW_TO_DATASET_IN_DB_ERROR = { message: 'Error adding row to dataset in database', errorCode: 'ROW_101', statusCode: 500 };
+export const ADD_ROW_TO_DATASET_ERROR = { message: 'Error adding row to dataset', errorCode: 'ROW_102', statusCode: 500 };

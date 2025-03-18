@@ -1,9 +1,40 @@
 import { Hono } from "hono"
+import { z } from "zod"
+
+import { addRowToDataset } from "../../controllers/rows/rows.controller"
+import { AddRowToDatasetError, AddRowToDatasetInDBError } from "../../exceptions/row.exceptions"
 
 const rowsRoute = new Hono()
 
-rowsRoute.post("/add", (c) => {
-    return c.json({ message: "Add row" })
+const AddRowToDatasetSchema = z.object({
+    columnId: z.string().describe("Column ID of the row"),
+    datasetId: z.string().describe("Dataset ID of the row"),
+    data: z.string().describe("Data of the row"),
+}).strict()
+
+export type IAddRowToDatasetSchema = z.infer<typeof AddRowToDatasetSchema> & { userId: string }
+
+rowsRoute.post("/add", async (c) => {
+    try {
+        const validation = AddRowToDatasetSchema.safeParse(await c.req.json())
+        if (!validation.success) {
+            throw validation.error;
+        }
+        const payload = {
+            ...validation.data,
+            userId: "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+        }
+        const row = await addRowToDataset(payload)
+        return c.json({ message: "Row added to dataset successfully", row })
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            return c.json({ message: "Validation error", errors: error.errors }, 400);
+        }
+        if (error instanceof AddRowToDatasetError || error instanceof AddRowToDatasetInDBError) {
+            return c.json({ message: error.message, errorCode: error.errorCode, statusCode: error.statusCode });
+        }
+        return c.json({ message: "Internal server error" }, 500);
+    }
 })
 
 rowsRoute.post("/delete", (c) => {
