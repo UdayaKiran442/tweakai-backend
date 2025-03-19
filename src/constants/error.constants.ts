@@ -8,6 +8,8 @@ export const CREATE_DATASET_IN_DB_ERROR = { message: 'Error creating dataset in 
 export const CREATE_DATASET_ERROR = { message: 'Error creating dataset', errorCode: 'DATASET_102', statusCode: 500 };
 export const FETCH_ALL_DATASETS_FROM_DB_ERROR = { message: 'Error fetching all datasets from database', errorCode: 'DATASET_103', statusCode: 500 };
 export const FETCH_ALL_DATASETS_ERROR = { message: 'Error fetching all datasets', errorCode: 'DATASET_104', statusCode: 500 };
+export const FETCH_DATASET_BY_ID_FROM_DB_ERROR = { message: 'Error fetching dataset by id from database', errorCode: 'DATASET_105', statusCode: 500 };
+export const FETCH_DATASET_BY_ID_ERROR = { message: 'Error fetching dataset by id', errorCode: 'DATASET_106', statusCode: 500 };
 
 // columns route
 export const ADD_COLUMN_TO_DATASET_IN_DB_ERROR = { message: 'Error adding column to dataset in database', errorCode: 'COLUMN_101', statusCode: 500 };

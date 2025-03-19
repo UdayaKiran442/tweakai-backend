@@ -3,9 +3,9 @@ import { eq } from "drizzle-orm";
 
 import { ICreateDatasetSchema } from "../../routes/datasets/datasets.route";
 import { generateUuid } from "../../utils/generateUuid.utils";
-import { datasets } from "../schema";
-import { CreateDatasetInDBError, FetchAllDatasetsFromDBError } from "../../exceptions/datasets.exceptions";
-import { CREATE_DATASET_IN_DB_ERROR, FETCH_ALL_DATASETS_FROM_DB_ERROR } from "../../constants/error.constants";
+import { columns, datasets, rows } from "../schema";
+import { CreateDatasetInDBError, FetchAllDatasetsFromDBError, FetchDatasetByIdFromDBError } from "../../exceptions/datasets.exceptions";
+import { CREATE_DATASET_IN_DB_ERROR, FETCH_ALL_DATASETS_FROM_DB_ERROR, FETCH_DATASET_BY_ID_FROM_DB_ERROR } from "../../constants/error.constants";
 
 export async function createDatasetInDB(payload: ICreateDatasetSchema) {
     try {
@@ -25,10 +25,29 @@ export async function createDatasetInDB(payload: ICreateDatasetSchema) {
     }
 }
 
-export async function fetchAllDatasetsFromDB(userId: string){
+export async function fetchAllDatasetsFromDB(userId: string) {
     try {
         return await db.select().from(datasets).where(eq(datasets.userId, userId));
     } catch (error) {
         throw new FetchAllDatasetsFromDBError(FETCH_ALL_DATASETS_FROM_DB_ERROR.message, FETCH_ALL_DATASETS_FROM_DB_ERROR.errorCode, FETCH_ALL_DATASETS_FROM_DB_ERROR.statusCode)
+    }
+}
+
+export async function fetchDatasetByIdFromDB(datasetId: string) {
+    try {
+        return await db.select({
+            datasetId: datasets.datasetId,
+            columnId: columns.columnId,
+            rowId: rows.rowId,
+            datasetName: datasets.name,
+            userId: datasets.userId,
+            description: datasets.description,
+            template: datasets.template,
+            columnName: columns.name,
+            columnType: columns.type,
+            rowData: rows.data
+        }).from(datasets).where(eq(datasets.datasetId, datasetId)).leftJoin(columns, eq(columns.datasetId, datasets.datasetId)).leftJoin(rows, eq(rows.columnId, columns.columnId));
+    } catch (error) {
+        throw new FetchDatasetByIdFromDBError(FETCH_DATASET_BY_ID_FROM_DB_ERROR.message, FETCH_DATASET_BY_ID_FROM_DB_ERROR.errorCode, FETCH_DATASET_BY_ID_FROM_DB_ERROR.statusCode)
     }
 }

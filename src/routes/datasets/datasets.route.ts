@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { createDataset, fetchAllDatasets } from "../../controllers/datasets/datasets.controller";
-import { CreateDatasetInDBError, FetchAllDatasetsError, FetchAllDatasetsFromDBError } from "../../exceptions/datasets.exceptions";
+import { createDataset, fetchAllDatasets, fetchDatasetById } from "../../controllers/datasets/datasets.controller";
+import { CreateDatasetInDBError, FetchAllDatasetsError, FetchAllDatasetsFromDBError, FetchDatasetByIdError, FetchDatasetByIdFromDBError } from "../../exceptions/datasets.exceptions";
 import { CreateDatasetError } from "../../exceptions/datasets.exceptions";
 
 const datasetsRoute = new Hono()
@@ -51,8 +51,33 @@ datasetsRoute.get("/fetch/all", async (c) => {
     }
 })
 
-datasetsRoute.post("/fetch", (c) => {
-    return c.json({ message: "Get dataset by id" })
+const FetchDatasetByIdSchema = z.object({
+    datasetId: z.string().describe("Id of the dataset")
+}).strict()
+
+export type IFetchDatasetByIdSchema = z.infer<typeof FetchDatasetByIdSchema> & { userId: string }
+
+datasetsRoute.post("/fetch", async (c) => {
+    try {
+        const validation = FetchDatasetByIdSchema.safeParse(await c.req.json());
+        if(!validation.success) {
+            throw validation.error
+        }
+        const payload = {
+            ...validation.data,
+            userId: "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+        }
+        const dataset = await fetchDatasetById(payload);
+        return c.json({ message: "Get dataset by id", dataset });
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            return c.json({ message: "Validation error", errors: error.errors }, 400);
+        }
+        if(error instanceof FetchDatasetByIdError || error instanceof FetchDatasetByIdFromDBError) {
+            return c.json({ message: error.message, errorCode: error.errorCode, statusCode: error.statusCode });
+        }
+        return c.json({ message: "Internal server error" }, 500);
+    }
 })
 
 datasetsRoute.post("/update/name", (c) => {
