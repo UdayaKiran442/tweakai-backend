@@ -15,12 +15,12 @@ bun run prod
 
 open http://localhost:3000
 
-## Docker Build Commands
-### For Production
+# Docker Build Commands
+## For Production
 - docker build --target production -t udayagonuguntla/tweakai-prod:prod .
 - docker push udayagonuguntla/tweakai-prod:prod
 - docker run -p 3000:3000 udayagonuguntla/tweakai-prod:prod
-### For Development
+## For Development
 - docker build --target development -t udayagonuguntla/tweakai-dev:dev .
 - docker push udayagonuguntla/tweakai-dev:dev
 - docker run -p 3000:3000 udayagonuguntla/tweakai-dev:dev 
@@ -47,5 +47,27 @@ open http://localhost:3000
 # Migration Script for running drizzle schemas
 ```sh
 npx drizzle-kit generate
-
 ```
+
+# Coding Guidelines
+## 1. Naming Conventions
+
+### 1.1. Variables
+- Use camal case for all variable names
+- Example userName, getUser()
+
+### 1.2. Constants
+- Use uppercase for all constants
+- Example USER_NAME, USER_COUNT
+
+### 1.3. Classes and constructors
+- Use PasacalCase for all classes
+- Example UserManager
+
+### 1.4 File names
+- Use dot notation
+- Example user.controller.ts
+
+
+
+
