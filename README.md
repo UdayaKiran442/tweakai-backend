@@ -31,6 +31,8 @@ open http://localhost:3000
 - If solving a bug create a branch from development or main which as per requirement with name FIX-bugname
 - Frequently commit the code. Commit message must be in present tense. For example while pushing after fixing a bug commit message must be FIX-message where as while pushing a feature commit message must be FEATURE-message.
 - If there is a code change in refactoring or cleaning of code then commit message must be CHORE-message
+- If there is a documentation change then commit message must be DOCS-message
+
 ## Type of commit messages
 - FEATURE - a new feature is introduced with the changes
 - FIX - a bug fix has occurred
