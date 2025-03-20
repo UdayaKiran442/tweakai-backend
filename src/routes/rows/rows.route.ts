@@ -1,15 +1,13 @@
 import { Hono } from "hono"
 import { z } from "zod"
 
-import { addRowToDataset } from "../../controllers/rows/rows.controller"
+import { addRowItemToDataset, addRowToDataset } from "../../controllers/rows/rows.controller"
 import { AddRowToDatasetError, AddRowToDatasetInDBError } from "../../exceptions/row.exceptions"
 
 const rowsRoute = new Hono()
 
 const AddRowToDatasetSchema = z.object({
-    columnId: z.string().describe("Column ID of the row"),
     datasetId: z.string().describe("Dataset ID of the row"),
-    data: z.string().describe("Data of the row"),
 }).strict()
 
 export type IAddRowToDatasetSchema = z.infer<typeof AddRowToDatasetSchema> & { userId: string }
@@ -32,6 +30,34 @@ rowsRoute.post("/add", async (c) => {
         }
         if (error instanceof AddRowToDatasetError || error instanceof AddRowToDatasetInDBError) {
             return c.json({ message: error.message, errorCode: error.errorCode, statusCode: error.statusCode });
+        }
+        return c.json({ message: "Internal server error" }, 500);
+    }
+})
+
+const AddRowItemToDatasetSchema = z.object({
+    rowId: z.string().describe("Row ID of the row"),
+    columnId: z.string().describe("Column ID of the row"),
+    data: z.string().describe("Data of the row"),
+}).strict()
+
+export type IAddRowItemToDatasetSchema = z.infer<typeof AddRowItemToDatasetSchema> & { userId: string }
+
+rowsRoute.post("/add/data", async (c) => {
+    try {
+        const validation = AddRowItemToDatasetSchema.safeParse(await c.req.json())
+        if (!validation.success) {
+            throw validation.error;
+        }
+        const payload = {
+            ...validation.data,
+            userId: "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+        }
+        const row = await addRowItemToDataset(payload);
+        return c.json({ message: "Row added to dataset successfully", row })
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            return c.json({ message: "Validation error", errors: error.errors }, 400);
         }
         return c.json({ message: "Internal server error" }, 500);
     }

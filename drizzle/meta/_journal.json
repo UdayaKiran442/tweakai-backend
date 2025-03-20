@@ -22,6 +22,13 @@
       "when": 1741931850543,
       "tag": "0002_numerous_redwing",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1742379260407,
+      "tag": "0003_busy_starbolt",
+      "breakpoints": true
     }
   ]
 }

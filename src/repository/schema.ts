@@ -1,6 +1,6 @@
 import { index, integer, pgEnum, pgTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 
-export const templateEnum = pgEnum("template", ["seo", "linkedin", "instagram"])
+export const templateEnum = pgEnum("template", ["seo", "linkedin", "instagram", "resume"])
 
 export const statusEnum = pgEnum("status", ["ready to use", "processing", "ready to train", "error"])
 
@@ -56,14 +56,40 @@ export const columns = pgTable("columns", {
 export const rows = pgTable("rows", {
     rowId: varchar("rowId", { length: 256 }).primaryKey(),
     datasetId: varchar("datasetId", { length: 256 }).notNull(),
-    columnId: varchar("columnId", { length: 256 }).notNull(),
-    data: text("data").notNull(),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").defaultNow(),
 }, (rows) => {
     return {
         rowsIdIdx: uniqueIndex("rows_id_idx").on(rows.rowId),
-        rowsDatasetIdIdx: index("rows_datasetId_idx").on(rows.datasetId),
-        rowsColumnIdIdx: index("rows_columnId_idx").on(rows.columnId)
+        rowsDatasetIdIdx: index("rows_datasetId_idx").on(rows.datasetId)
     }
 })
+
+export const rowItems = pgTable("row_items", {
+    rowItemId: varchar("rowItemId", { length: 256 }).primaryKey(),
+    rowId: varchar("rowId", { length: 256 }).notNull(),
+    columnId: varchar("columnId", { length: 256 }).notNull(),
+    data: text("data").notNull(),
+    createdAt: timestamp("createdAt").defaultNow(),
+    updatedAt: timestamp("updatedAt").defaultNow(),
+}, (rowItems) => {
+    return {
+        rowItemsIdIdx: uniqueIndex("row_items_id_idx").on(rowItems.rowItemId),
+        rowItemsRowIdIdx: index("row_items_rowId_idx").on(rowItems.rowId),
+        rowItemsColumnIdIdx: index("row_items_columnId_idx").on(rowItems.columnId)
+    }
+})
+
+// Types for API responses
+export type RowData = {
+    rowId: string;
+    datasetId: string;
+    items: RowItemData[];
+}
+
+export type RowItemData = {
+    columnId: string;
+    columnName: string;
+    columnType: string;
+    data: string;
+}
