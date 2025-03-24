@@ -10,6 +10,8 @@ export const FETCH_ALL_DATASETS_FROM_DB_ERROR = { message: 'Error fetching all d
 export const FETCH_ALL_DATASETS_ERROR = { message: 'Error fetching all datasets', errorCode: 'DATASET_104', statusCode: 500 };
 export const FETCH_DATASET_BY_ID_FROM_DB_ERROR = { message: 'Error fetching dataset by id from database', errorCode: 'DATASET_105', statusCode: 500 };
 export const FETCH_DATASET_BY_ID_ERROR = { message: 'Error fetching dataset by id', errorCode: 'DATASET_106', statusCode: 500 };
+export const UPDATE_ROW_COUNT_IN_DATASET_IN_DB_ERROR = { message: 'Error updating row count in dataset in database', errorCode: 'DATASET_107', statusCode: 500 };
+export const UPDATE_COLUMN_COUNT_IN_DATASET_IN_DB_ERROR = { message: 'Error updating column count in dataset in database', errorCode: 'DATASET_108', statusCode: 500 };
 
 // columns route
 export const ADD_COLUMN_TO_DATASET_IN_DB_ERROR = { message: 'Error adding column to dataset in database', errorCode: 'COLUMN_101', statusCode: 500 };
@@ -18,3 +20,7 @@ export const ADD_COLUMN_TO_DATASET_ERROR = { message: 'Error adding column to da
 // rows route
 export const ADD_ROW_TO_DATASET_IN_DB_ERROR = { message: 'Error adding row to dataset in database', errorCode: 'ROW_101', statusCode: 500 };
 export const ADD_ROW_TO_DATASET_ERROR = { message: 'Error adding row to dataset', errorCode: 'ROW_102', statusCode: 500 };
+export const ADD_ROW_ITEM_TO_DATASET_IN_DB_ERROR = { message: 'Error adding row item to dataset in database', errorCode: 'ROW_103', statusCode: 500 };
+export const INSERT_BULK_ROW_ITEMS_IN_DB_ERROR = { message: 'Error inserting bulk row items in database', errorCode: 'ROW_104', statusCode: 500 };
+export const FETCH_EXISTING_ROWS_IN_DB_ERROR = { message: 'Error fetching existing rows in database', errorCode: 'ROW_105', statusCode: 500 };
+export const ADD_ROW_ITEM_TO_DATASET_ERROR = { message: 'Error adding row item to dataset', errorCode: 'ROW_106', statusCode: 500 };
