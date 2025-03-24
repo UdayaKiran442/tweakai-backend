@@ -67,12 +67,12 @@ export async function fetchDatasetByIdFromDB(datasetId: string) {
                 });
             }
             
-            if (item.columnId && item.data) {
+            if (item.columnId) {
                 rowsMap.get(item.rowId)?.items.push({
                     columnId: item.columnId,
                     columnName: item.columnName || '',
                     columnType: item.columnType || '',
-                    data: item.data
+                    data: item.data || ''
                 });
             }
         });
