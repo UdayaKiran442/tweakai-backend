@@ -2,7 +2,8 @@ import { Hono } from "hono"
 import { z } from "zod"
 
 import { addRowItemToDataset, addRowToDataset } from "../../controllers/rows/rows.controller"
-import { AddRowToDatasetError, AddRowToDatasetInDBError } from "../../exceptions/row.exceptions"
+import { AddRowToDatasetError, AddRowToDatasetInDBError, AddRowItemToDatasetError, AddRowItemToDatasetInDBError } from "../../exceptions/row.exceptions"
+import { UpdateRowCountInDatasetInDBError } from "../../exceptions/datasets.exceptions"
 
 const rowsRoute = new Hono()
 
@@ -28,7 +29,7 @@ rowsRoute.post("/add", async (c) => {
         if (error instanceof z.ZodError) {
             return c.json({ message: "Validation error", errors: error.errors }, 400);
         }
-        if (error instanceof AddRowToDatasetError || error instanceof AddRowToDatasetInDBError) {
+        if (error instanceof AddRowToDatasetError || error instanceof AddRowToDatasetInDBError || error instanceof UpdateRowCountInDatasetInDBError) {
             return c.json({ message: error.message, errorCode: error.errorCode, statusCode: error.statusCode });
         }
         return c.json({ message: "Internal server error" }, 500);
@@ -58,6 +59,9 @@ rowsRoute.post("/add/data", async (c) => {
     } catch (error) {
         if (error instanceof z.ZodError) {
             return c.json({ message: "Validation error", errors: error.errors }, 400);
+        }
+        if (error instanceof AddRowItemToDatasetError || error instanceof AddRowItemToDatasetInDBError) {
+            return c.json({ message: error.message, errorCode: error.errorCode, statusCode: error.statusCode });
         }
         return c.json({ message: "Internal server error" }, 500);
     }

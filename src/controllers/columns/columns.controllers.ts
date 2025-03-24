@@ -1,5 +1,7 @@
 import { ADD_COLUMN_TO_DATASET_ERROR } from "../../constants/error.constants";
 import { AddColumnToDatasetError, AddColumnToDatasetInDBError } from "../../exceptions/column.exceptions";
+import { UpdateColumnCountInDatasetInDBError } from "../../exceptions/datasets.exceptions";
+import { FetchExistingRowsInDBError, InsertBulkRowItemsInDBError } from "../../exceptions/row.exceptions";
 import { addColumnToDatasetInDB } from "../../repository/columns/columns.repository";
 import { updateColumnCountInDatasetInDB } from "../../repository/datasets/datasets.repository";
 import { fetchExistingRowsInDB, insertBulkRowItemsInDB } from "../../repository/rows/rows.repository";
@@ -31,7 +33,7 @@ export async function addColumnToDataset(payload: IAddColumnToDatasetSchema) {
         await updateColumnCountInDatasetInDB(payload.datasetId);
         return column;
     } catch (error) {
-        if (error instanceof AddColumnToDatasetInDBError) {
+        if (error instanceof AddColumnToDatasetInDBError || error instanceof InsertBulkRowItemsInDBError || error instanceof UpdateColumnCountInDatasetInDBError || error instanceof FetchExistingRowsInDBError) {
             return { message: error.message, errorCode: error.errorCode, statusCode: error.statusCode };
         }
         throw new AddColumnToDatasetError(ADD_COLUMN_TO_DATASET_ERROR.message, ADD_COLUMN_TO_DATASET_ERROR.errorCode, ADD_COLUMN_TO_DATASET_ERROR.statusCode)

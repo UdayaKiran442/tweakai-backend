@@ -3,6 +3,8 @@ import { z } from "zod"
 
 import { addColumnToDataset } from "../../controllers/columns/columns.controllers"
 import { AddColumnToDatasetError, AddColumnToDatasetInDBError } from "../../exceptions/column.exceptions"
+import { FetchExistingRowsInDBError, InsertBulkRowItemsInDBError } from "../../exceptions/row.exceptions"
+import { UpdateColumnCountInDatasetInDBError } from "../../exceptions/datasets.exceptions"
 
 const columnsRoute = new Hono()
 
@@ -30,7 +32,7 @@ columnsRoute.post("/add", async (c) => {
         if (error instanceof z.ZodError) {
             return c.json({ message: "Validation error", errors: error.errors }, 400);
         }
-        if (error instanceof AddColumnToDatasetError || error instanceof AddColumnToDatasetInDBError) {
+        if (error instanceof AddColumnToDatasetError || error instanceof AddColumnToDatasetInDBError || error instanceof InsertBulkRowItemsInDBError || error instanceof UpdateColumnCountInDatasetInDBError || error instanceof FetchExistingRowsInDBError) {
             return c.json({ message: error.message, errorCode: error.errorCode, statusCode: error.statusCode });
         }
         return c.json({ message: "Internal server error" }, 500);

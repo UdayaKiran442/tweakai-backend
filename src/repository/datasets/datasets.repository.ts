@@ -4,8 +4,8 @@ import db from "../db";
 import { ICreateDatasetSchema } from "../../routes/datasets/datasets.route";
 import { generateUuid } from "../../utils/generateUuid.utils";
 import { columns, datasets, rows, rowItems, RowData } from "../schema";
-import { CreateDatasetInDBError, FetchAllDatasetsFromDBError, FetchDatasetByIdFromDBError } from "../../exceptions/datasets.exceptions";
-import { CREATE_DATASET_IN_DB_ERROR, FETCH_ALL_DATASETS_FROM_DB_ERROR, FETCH_DATASET_BY_ID_FROM_DB_ERROR } from "../../constants/error.constants";
+import { CreateDatasetInDBError, FetchAllDatasetsFromDBError, FetchDatasetByIdFromDBError, UpdateRowCountInDatasetInDBError, UpdateColumnCountInDatasetInDBError } from "../../exceptions/datasets.exceptions";
+import { CREATE_DATASET_IN_DB_ERROR, FETCH_ALL_DATASETS_FROM_DB_ERROR, FETCH_DATASET_BY_ID_FROM_DB_ERROR, UPDATE_ROW_COUNT_IN_DATASET_IN_DB_ERROR, UPDATE_COLUMN_COUNT_IN_DATASET_IN_DB_ERROR } from "../../constants/error.constants";
 
 export async function createDatasetInDB(payload: ICreateDatasetSchema) {
     try {
@@ -100,7 +100,7 @@ export async function updateRowCountInDatasetInDB(datasetId: string) {
             
         return { success: true };
     } catch (error) {
-
+        throw new UpdateRowCountInDatasetInDBError(UPDATE_ROW_COUNT_IN_DATASET_IN_DB_ERROR.message, UPDATE_ROW_COUNT_IN_DATASET_IN_DB_ERROR.errorCode, UPDATE_ROW_COUNT_IN_DATASET_IN_DB_ERROR.statusCode);
     }
 }
 
@@ -116,6 +116,6 @@ export async function updateColumnCountInDatasetInDB(datasetId: string) {
             
         return { success: true };
     } catch (error) {
-
+        throw new UpdateColumnCountInDatasetInDBError(UPDATE_COLUMN_COUNT_IN_DATASET_IN_DB_ERROR.message, UPDATE_COLUMN_COUNT_IN_DATASET_IN_DB_ERROR.errorCode, UPDATE_COLUMN_COUNT_IN_DATASET_IN_DB_ERROR.statusCode);
     }
 }
