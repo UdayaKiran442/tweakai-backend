@@ -1,11 +1,25 @@
+/*
+ * Repository for row operations
+ * 
+ * This module handles database operations for rows.
+ */
+
+import { eq } from "drizzle-orm";
+
 import db from "../db";
 import { ADD_ROW_TO_DATASET_IN_DB_ERROR, ADD_ROW_ITEM_TO_DATASET_IN_DB_ERROR, INSERT_BULK_ROW_ITEMS_IN_DB_ERROR, FETCH_EXISTING_ROWS_IN_DB_ERROR } from "../../constants/error.constants";
 import { IAddRowItemToDatasetSchema, IAddRowToDatasetSchema } from "../../routes/rows/rows.route";
 import { generateUuid } from "../../utils/generateUuid.utils";
 import { rowItems, rows } from "../schema";
 import { AddRowToDatasetInDBError, AddRowItemToDatasetInDBError, InsertBulkRowItemsInDBError, FetchExistingRowsInDBError } from "../../exceptions/row.exceptions";
-import { eq } from "drizzle-orm";
 
+/**
+ * Adds a new row to the dataset in the database
+ * 
+ * @param payload - Dataset ID and row details
+ * @returns Newly added row object
+ * @throws AddRowToDatasetInDBError if row cannot be added
+ */
 export async function addRowToDatasetInDB(payload: IAddRowToDatasetSchema){
     try {
         const insertPayload = {
@@ -22,6 +36,13 @@ export async function addRowToDatasetInDB(payload: IAddRowToDatasetSchema){
     }
 }
 
+/**
+ * Adds a new row item to the dataset in the database
+ * 
+ * @param payload - Row ID, column ID, and row item details
+ * @returns Newly added row item object
+ * @throws AddRowItemToDatasetInDBError if row item cannot be added
+ */
 export async function addRowItemToDatasetInDB(payload: IAddRowItemToDatasetSchema){
     try {
         const insertPayload = {
@@ -39,6 +60,13 @@ export async function addRowItemToDatasetInDB(payload: IAddRowItemToDatasetSchem
     }
 }
 
+/**
+ * Inserts multiple row items into the database
+ * 
+ * @param payload - Array of row item objects
+ * @returns Array of inserted row item objects
+ * @throws InsertBulkRowItemsInDBError if row items cannot be inserted
+ */
 export async function insertBulkRowItemsInDB(payload: {
     rowItemId: string,
     rowId: string,
@@ -55,6 +83,13 @@ export async function insertBulkRowItemsInDB(payload: {
     }
 }
 
+/**
+ * Fetches existing rows from the database
+ * 
+ * @param datasetId - ID of the dataset
+ * @returns Array of existing rows
+ * @throws FetchExistingRowsInDBError if rows cannot be fetched
+ */
 export async function fetchExistingRowsInDB(datasetId: string){
     try {
         return await db.select().from(rows).where(eq(rows.datasetId, datasetId));

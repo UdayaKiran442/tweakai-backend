@@ -1,12 +1,33 @@
+/**
+ * Database Schema Module
+ * 
+ * This module defines the database schema using Drizzle ORM.
+ * It contains table definitions, relationships, and type definitions for the application.
+ */
 import { index, integer, pgEnum, pgTable, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 
+/**
+ * Enum for dataset templates
+ * Defines the different types of templates available for datasets
+ */
 export const templateEnum = pgEnum("template", ["seo", "linkedin", "instagram", "resume"])
 
+/**
+ * Enum for dataset processing status
+ * Tracks the current state of a dataset in the processing pipeline
+ */
 export const statusEnum = pgEnum("status", ["ready to use", "processing", "ready to train", "error"])
 
+/**
+ * Enum for column types
+ * Distinguishes between input columns (user-provided data) and output columns (AI-generated data)
+ */
 export const typeEnum = pgEnum("type", ["input", "output"])
 
-
+/**
+ * Users table
+ * Stores user account information and profile details
+ */
 export const users = pgTable("users", {
     userId: varchar("userId", { length: 256 }).primaryKey(),
     name: varchar("name", { length: 256 }),
@@ -21,6 +42,11 @@ export const users = pgTable("users", {
     }
 })
 
+/**
+ * Datasets table
+ * Stores metadata about datasets created by users
+ * Each dataset contains multiple rows and columns
+ */
 export const datasets = pgTable("datasets", {
     datasetId: varchar("datasetId", { length: 256 }).primaryKey(),
     name: varchar("name", { length: 256 }).notNull(),
@@ -39,6 +65,11 @@ export const datasets = pgTable("datasets", {
     }
 })
 
+/**
+ * Columns table
+ * Defines the structure of datasets by specifying column names and types
+ * Each column belongs to a specific dataset
+ */
 export const columns = pgTable("columns", {
     columnId: varchar("columnId", { length: 256 }).primaryKey(),
     name: varchar("name", { length: 256 }).notNull(),
@@ -53,6 +84,11 @@ export const columns = pgTable("columns", {
     }
 })
 
+/**
+ * Rows table
+ * Represents individual data entries within a dataset
+ * Each row contains multiple row items (cell values)
+ */
 export const rows = pgTable("rows", {
     rowId: varchar("rowId", { length: 256 }).primaryKey(),
     datasetId: varchar("datasetId", { length: 256 }).notNull(),
@@ -65,6 +101,11 @@ export const rows = pgTable("rows", {
     }
 })
 
+/**
+ * Row Items table
+ * Stores the actual data values (cells) for each row
+ * Each row item represents a single cell value at the intersection of a row and column
+ */
 export const rowItems = pgTable("row_items", {
     rowItemId: varchar("rowItemId", { length: 256 }).primaryKey(),
     rowId: varchar("rowId", { length: 256 }).notNull(),
@@ -80,13 +121,24 @@ export const rowItems = pgTable("row_items", {
     }
 })
 
-// Types for API responses
+/**
+ * Type Definitions for API Responses
+ */
+
+/**
+ * RowData type
+ * Represents a complete row with its associated items (cell values)
+ */
 export type RowData = {
     rowId: string;
     datasetId: string;
     items: RowItemData[];
 }
 
+/**
+ * RowItemData type
+ * Represents a single cell value with its associated column metadata
+ */
 export type RowItemData = {
     columnId: string;
     columnName: string;

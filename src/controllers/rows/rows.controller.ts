@@ -5,10 +5,18 @@ import { AddRowItemToDatasetError, AddRowItemToDatasetInDBError, AddRowToDataset
 import { updateRowCountInDatasetInDB } from "../../repository/datasets/datasets.repository";
 import { UpdateRowCountInDatasetInDBError } from "../../exceptions/datasets.exceptions";
 
+/**
+ * Controller for adding a new row to a dataset
+ * 
+ * @param payload - Dataset ID and row details
+ * @returns Newly added row object
+ * @throws AddRowToDatasetError if row cannot be added, throws respective db errors if database operation fails
+ */
+
 export async function addRowToDataset(payload: IAddRowToDatasetSchema){
     try {     
         const row = await addRowToDatasetInDB(payload);
-        // Update row count in dataset
+        // increment row count in dataset after successfully adding row
         await updateRowCountInDatasetInDB(payload.datasetId);
         return row;
     } catch (error) {
@@ -19,6 +27,13 @@ export async function addRowToDataset(payload: IAddRowToDatasetSchema){
     }
 }
 
+/**
+ * Controller for adding a new row item to a dataset
+ * 
+ * @param payload - Dataset ID and row item details
+ * @returns Newly added row item object
+ * @throws AddRowItemToDatasetError if row item cannot be added, throws respective db errors if database operation fails
+ */
 export async function addRowItemToDataset(payload: IAddRowItemToDatasetSchema){
     try {
         return await addRowItemToDatasetInDB(payload);

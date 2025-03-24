@@ -1,5 +1,12 @@
+/*
+ * Route for authentication operations
+ * 
+ * This module handles route operations for authentication.
+ */
+
 import { Hono } from "hono";
 import { z } from "zod";
+
 import { loginUser } from "../../controllers/auth/auth.controller";
 import { FindUserByEmailInDBError, LoginUserError, RegisterUserInDBError } from "../../exceptions/auth.exceptions";
 

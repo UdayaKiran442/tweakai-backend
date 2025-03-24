@@ -1,8 +1,21 @@
+/**
+ * Controller for user authentication
+ * 
+ * This module handles user authentication operations, including user login and registration.
+ */
+
 import { findUserByEmailInDb, registerUserInDb } from "../../repository/auth/auth.repository";
 import { IUserSchema } from "../../routes/auth/auth.router";
 import { FindUserByEmailInDBError, LoginUserError, RegisterUserInDBError } from "../../exceptions/auth.exceptions";
 import { LOGIN_USER_ERROR } from "../../constants/error.constants";
 
+/**
+ * Logs in a user by their email
+ * 
+ * @param payload - User credentials containing email
+ * @returns User object if found, or newly registered user object
+ * @throws LoginUserError if user does not exist or database operation fails
+ */
 export async function loginUser(payload: IUserSchema) {
     try {
         // check if user exists, find user by email
