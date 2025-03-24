@@ -1,9 +1,9 @@
 import { Hono } from "hono"
 import { z } from "zod"
 
-import { addRowItemToDataset, addRowToDataset } from "../../controllers/rows/rows.controller"
-import { AddRowToDatasetError, AddRowToDatasetInDBError, AddRowItemToDatasetError, AddRowItemToDatasetInDBError } from "../../exceptions/row.exceptions"
-import { UpdateRowCountInDatasetInDBError } from "../../exceptions/datasets.exceptions"
+import { addRowItemToDataset, addRowToDataset } from "../../../controllers/rows/rows.controller"
+import { AddRowToDatasetError, AddRowToDatasetInDBError, AddRowItemToDatasetError, AddRowItemToDatasetInDBError } from "../../../exceptions/row.exceptions"
+import { UpdateRowCountInDatasetInDBError } from "../../../exceptions/datasets.exceptions"
 
 const rowsRoute = new Hono()
 

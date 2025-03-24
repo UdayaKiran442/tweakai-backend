@@ -1,10 +1,10 @@
 import { Hono } from "hono"
 import { z } from "zod"
 
-import { addColumnToDataset } from "../../controllers/columns/columns.controllers"
-import { AddColumnToDatasetError, AddColumnToDatasetInDBError } from "../../exceptions/column.exceptions"
-import { FetchExistingRowsInDBError, InsertBulkRowItemsInDBError } from "../../exceptions/row.exceptions"
-import { UpdateColumnCountInDatasetInDBError } from "../../exceptions/datasets.exceptions"
+import { addColumnToDataset } from "../../../controllers/columns/columns.controllers"
+import { AddColumnToDatasetError, AddColumnToDatasetInDBError } from "../../../exceptions/column.exceptions"
+import { FetchExistingRowsInDBError, InsertBulkRowItemsInDBError } from "../../../exceptions/row.exceptions"
+import { UpdateColumnCountInDatasetInDBError } from "../../../exceptions/datasets.exceptions"
 
 const columnsRoute = new Hono()
 

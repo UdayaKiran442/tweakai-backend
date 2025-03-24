@@ -1,4 +1,4 @@
-import { IAddRowItemToDatasetSchema, IAddRowToDatasetSchema } from "../../routes/rows/rows.route";
+import { IAddRowItemToDatasetSchema, IAddRowToDatasetSchema } from "../../routes/v1/rows/rows.route";
 import { addRowItemToDatasetInDB, addRowToDatasetInDB } from "../../repository/rows/rows.repository";
 import { ADD_ROW_ITEM_TO_DATASET_ERROR, ADD_ROW_TO_DATASET_ERROR } from "../../constants/error.constants";
 import { AddRowItemToDatasetError, AddRowItemToDatasetInDBError, AddRowToDatasetError, AddRowToDatasetInDBError } from "../../exceptions/row.exceptions";

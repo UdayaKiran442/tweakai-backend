@@ -5,7 +5,7 @@
  */
 
 import { findUserByEmailInDb, registerUserInDb } from "../../repository/auth/auth.repository";
-import { IUserSchema } from "../../routes/auth/auth.router";
+import { IUserSchema } from "../../routes/v1/auth/auth.router";
 import { FindUserByEmailInDBError, LoginUserError, RegisterUserInDBError } from "../../exceptions/auth.exceptions";
 import { LOGIN_USER_ERROR } from "../../constants/error.constants";
 

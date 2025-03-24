@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 
 import db from "../db";
 import { ADD_ROW_TO_DATASET_IN_DB_ERROR, ADD_ROW_ITEM_TO_DATASET_IN_DB_ERROR, INSERT_BULK_ROW_ITEMS_IN_DB_ERROR, FETCH_EXISTING_ROWS_IN_DB_ERROR } from "../../constants/error.constants";
-import { IAddRowItemToDatasetSchema, IAddRowToDatasetSchema } from "../../routes/rows/rows.route";
+import { IAddRowItemToDatasetSchema, IAddRowToDatasetSchema } from "../../routes/v1/rows/rows.route";
 import { generateUuid } from "../../utils/generateUuid.utils";
 import { rowItems, rows } from "../schema";
 import { AddRowToDatasetInDBError, AddRowItemToDatasetInDBError, InsertBulkRowItemsInDBError, FetchExistingRowsInDBError } from "../../exceptions/row.exceptions";

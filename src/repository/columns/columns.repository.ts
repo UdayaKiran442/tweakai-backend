@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 
 import db from "../db";
 import { columns, rows, rowItems } from "../schema";
-import { IAddColumnToDatasetSchema } from "../../routes/columns/columns.route";
+import { IAddColumnToDatasetSchema } from "../../routes/v1/columns/columns.route";
 import { generateUuid } from "../../utils/generateUuid.utils";
 import { AddColumnToDatasetInDBError } from "../../exceptions/column.exceptions";
 import { ADD_COLUMN_TO_DATASET_IN_DB_ERROR } from "../../constants/error.constants";

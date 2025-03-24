@@ -115,6 +115,10 @@ src/
 - Example user.route.ts
 - Routes are used to handle the routing of the application
 - Use zod to validate the request body and to create schema for the payload
+- Routes are versioned
+- Example /api/v1/auth/login
+- While creating a new version of any route always write it in the new version folder
+- Example if v3 version of auth route is created, write it in src/routes/v3/auth/auth.route.ts
 
 ### 2.5. Services
 - Use dot notation for service names

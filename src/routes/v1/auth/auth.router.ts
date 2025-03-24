@@ -7,8 +7,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { loginUser } from "../../controllers/auth/auth.controller";
-import { FindUserByEmailInDBError, LoginUserError, RegisterUserInDBError } from "../../exceptions/auth.exceptions";
+import { loginUser } from "../../../controllers/auth/auth.controller";
+import { FindUserByEmailInDBError, LoginUserError, RegisterUserInDBError } from "../../../exceptions/auth.exceptions";
 
 const authRouter = new Hono();
 
