@@ -1,6 +1,6 @@
-import db from "../db";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
+import db from "../db";
 import { ICreateDatasetSchema } from "../../routes/datasets/datasets.route";
 import { generateUuid } from "../../utils/generateUuid.utils";
 import { columns, datasets, rows, rowItems, RowData } from "../schema";
@@ -81,5 +81,41 @@ export async function fetchDatasetByIdFromDB(datasetId: string) {
         return Array.from(rowsMap.values());
     } catch (error) {
         throw new FetchDatasetByIdFromDBError(FETCH_DATASET_BY_ID_FROM_DB_ERROR.message, FETCH_DATASET_BY_ID_FROM_DB_ERROR.errorCode, FETCH_DATASET_BY_ID_FROM_DB_ERROR.statusCode)
+    }
+}
+
+/**
+ * Update the row count in a dataset
+ * @param datasetId The ID of the dataset to update
+ */
+export async function updateRowCountInDatasetInDB(datasetId: string) {
+    try {
+        // Use SQL expression to increment the rowsCount
+        await db.update(datasets)
+            .set({
+                rowsCount: sql`${datasets.rowsCount} + 1`,
+                updatedAt: new Date()
+            })
+            .where(eq(datasets.datasetId, datasetId));
+            
+        return { success: true };
+    } catch (error) {
+
+    }
+}
+
+export async function updateColumnCountInDatasetInDB(datasetId: string) {
+    try {
+        // Use SQL expression to increment the columnsCount
+        await db.update(datasets)
+            .set({
+                columnsCount: sql`${datasets.columnsCount} + 1`,
+                updatedAt: new Date()
+            })
+            .where(eq(datasets.datasetId, datasetId));
+            
+        return { success: true };
+    } catch (error) {
+
     }
 }

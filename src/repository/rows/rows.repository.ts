@@ -4,6 +4,7 @@ import { IAddRowItemToDatasetSchema, IAddRowToDatasetSchema } from "../../routes
 import { generateUuid } from "../../utils/generateUuid.utils";
 import { rowItems, rows } from "../schema";
 import { AddRowToDatasetInDBError } from "../../exceptions/row.exceptions";
+import { eq } from "drizzle-orm";
 
 export async function addRowToDatasetInDB(payload: IAddRowToDatasetSchema){
     try {
@@ -33,6 +34,30 @@ export async function addRowItemToDatasetInDB(payload: IAddRowItemToDatasetSchem
         }
         await db.insert(rowItems).values(insertPayload);
         return insertPayload;
+    } catch (error) {
+        
+    }
+}
+
+export async function insertBulkRowItemsInDB(payload: {
+    rowItemId: string,
+    rowId: string,
+    columnId: string,
+    data: string,
+    createdAt: Date,
+    updatedAt: Date
+}[]){
+    try {
+        await db.insert(rowItems).values(payload);
+        return payload;
+    } catch (error) {
+        
+    }
+}
+
+export async function fetchExistingRowsInDB(datasetId: string){
+    try {
+        return await db.select().from(rows).where(eq(rows.datasetId, datasetId));
     } catch (error) {
         
     }
