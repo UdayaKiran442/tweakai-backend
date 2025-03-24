@@ -12,7 +12,7 @@ import { FetchExistingRowsInDBError, InsertBulkRowItemsInDBError } from "../../e
 import { addColumnToDatasetInDB } from "../../repository/columns/columns.repository";
 import { updateColumnCountInDatasetInDB } from "../../repository/datasets/datasets.repository";
 import { fetchExistingRowsInDB, insertBulkRowItemsInDB } from "../../repository/rows/rows.repository";
-import { IAddColumnToDatasetSchema } from "../../routes/columns/columns.route";
+import { IAddColumnToDatasetSchema } from "../../routes/v1/columns/columns.route";
 import { generateUuid } from "../../utils/generateUuid.utils";
 
 

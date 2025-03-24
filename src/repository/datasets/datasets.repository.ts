@@ -7,7 +7,7 @@
 import { eq, sql } from "drizzle-orm";
 
 import db from "../db";
-import { ICreateDatasetSchema } from "../../routes/datasets/datasets.route";
+import { ICreateDatasetSchema } from "../../routes/v1/datasets/datasets.route";
 import { generateUuid } from "../../utils/generateUuid.utils";
 import { columns, datasets, rows, rowItems, RowData } from "../schema";
 import { CreateDatasetInDBError, FetchAllDatasetsFromDBError, FetchDatasetByIdFromDBError, UpdateRowCountInDatasetInDBError, UpdateColumnCountInDatasetInDBError } from "../../exceptions/datasets.exceptions";

@@ -8,7 +8,7 @@
 import { CREATE_DATASET_ERROR, FETCH_ALL_DATASETS_ERROR, FETCH_DATASET_BY_ID_ERROR } from "../../constants/error.constants";
 import { CreateDatasetError, CreateDatasetInDBError, FetchAllDatasetsError, FetchAllDatasetsFromDBError, FetchDatasetByIdError, FetchDatasetByIdFromDBError } from "../../exceptions/datasets.exceptions";
 import { createDatasetInDB, fetchAllDatasetsFromDB, fetchDatasetByIdFromDB } from "../../repository/datasets/datasets.repository";
-import { ICreateDatasetSchema, IFetchDatasetByIdSchema } from "../../routes/datasets/datasets.route";
+import { ICreateDatasetSchema, IFetchDatasetByIdSchema } from "../../routes/v1/datasets/datasets.route";
 
 /**
  * Controller for creating a new dataset

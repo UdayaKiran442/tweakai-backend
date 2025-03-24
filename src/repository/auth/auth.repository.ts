@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 
 import db from "../db";
-import { IUserSchema } from "../../routes/auth/auth.router";
+import { IUserSchema } from "../../routes/v1/auth/auth.router";
 import { generateUuid } from "../../utils/generateUuid.utils";
 import { users } from "../schema";
 import { FindUserByEmailInDBError, RegisterUserInDBError } from "../../exceptions/auth.exceptions";

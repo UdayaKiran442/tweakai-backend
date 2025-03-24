@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { createDataset, fetchAllDatasets, fetchDatasetById } from "../../controllers/datasets/datasets.controller";
-import { CreateDatasetInDBError, FetchAllDatasetsError, FetchAllDatasetsFromDBError, FetchDatasetByIdError, FetchDatasetByIdFromDBError } from "../../exceptions/datasets.exceptions";
-import { CreateDatasetError } from "../../exceptions/datasets.exceptions";
+import { createDataset, fetchAllDatasets, fetchDatasetById } from "../../../controllers/datasets/datasets.controller";
+import { CreateDatasetInDBError, FetchAllDatasetsError, FetchAllDatasetsFromDBError, FetchDatasetByIdError, FetchDatasetByIdFromDBError } from "../../../exceptions/datasets.exceptions";
+import { CreateDatasetError } from "../../../exceptions/datasets.exceptions";
 
 const datasetsRoute = new Hono()
 
