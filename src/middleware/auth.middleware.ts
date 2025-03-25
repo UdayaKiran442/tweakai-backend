@@ -1,5 +1,6 @@
 import { Context, Next } from "hono";
 import { jwtDecode } from "jwt-decode";
+import { AppVariables } from "../types/app.types";
 
 /**
  * Authentication middleware
@@ -9,7 +10,7 @@ import { jwtDecode } from "jwt-decode";
  * @param next - Next function to continue the request pipeline
  * @returns Response or continues to the next middleware/handler
  */
-export async function authMiddleware(c: Context, next: Next) {
+export async function authMiddleware(c: Context<{ Variables: AppVariables }>, next: Next) {
     const token = c.req.header("Authorization");
     
     if (!token) {
