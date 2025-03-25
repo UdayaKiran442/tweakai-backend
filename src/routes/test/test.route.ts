@@ -1,11 +1,20 @@
 import { Hono } from "hono";
-import { fetchDatasetByIdFromDB } from "../../repository/datasets/datasets.repository";
 
-const testRoute = new Hono()
+import { authMiddleware } from "../../middleware/auth.middleware";
 
-testRoute.get("/", async (c) => {
-    const response = await fetchDatasetByIdFromDB("dataset-75626bdb-9602-4155-808e-0035f34f6e8e");
-    return c.json({ message: "Get dataset by id", response });
-})
+// Define the type for our context variables
+type Variables = {
+    userId: string;
+};
 
-export default testRoute
+// Create a typed Hono instance
+const testRoute = new Hono<{ Variables: Variables }>();
+
+
+testRoute.get("/", authMiddleware, async (c) => {
+    // The userId is available from the context
+    const userId = c.get("userId");
+    return c.json({ message: "Get dataset by id", userId });
+});
+
+export default testRoute;
