@@ -4,6 +4,8 @@ import { z } from "zod";
 import { createDataset, fetchAllDatasets, fetchDatasetById } from "../../../controllers/datasets/datasets.controller";
 import { CreateDatasetInDBError, FetchAllDatasetsError, FetchAllDatasetsFromDBError, FetchDatasetByIdError, FetchDatasetByIdFromDBError } from "../../../exceptions/datasets.exceptions";
 import { CreateDatasetError } from "../../../exceptions/datasets.exceptions";
+import { AppVariables } from "../../../types/app.types";
+import { authMiddleware } from "../../../middleware/auth.middleware";
 
 const datasetsRoute = new Hono()
 
@@ -15,15 +17,16 @@ const CreateDatasetSchema = z.object({
 
 export type ICreateDatasetSchema = z.infer<typeof CreateDatasetSchema> & { userId: string }
 
-datasetsRoute.post("/create", async (c) => {
+datasetsRoute.post("/create", authMiddleware, async (c) => {
     try {
         const validation = CreateDatasetSchema.safeParse(await c.req.json());
+        const userId = c.get("userId");
         if(!validation.success) {
             throw validation.error
         }
         const payload = {
             ...validation.data,
-            userId: "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+            userId
         }
         const dataset = await createDataset(payload);
         return c.json({ message: "Dataset created successfully", dataset })
@@ -38,9 +41,9 @@ datasetsRoute.post("/create", async (c) => {
     }
 })
 
-datasetsRoute.get("/fetch/all", async (c) => {
+datasetsRoute.get("/fetch/all", authMiddleware, async (c) => {
     try {
-        const userId = "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+        const userId = c.get("userId");
         const datasets = await fetchAllDatasets(userId);
         return c.json({ message: "Get datasets", datasets });
     } catch (error) {
@@ -57,15 +60,16 @@ const FetchDatasetByIdSchema = z.object({
 
 export type IFetchDatasetByIdSchema = z.infer<typeof FetchDatasetByIdSchema> & { userId: string }
 
-datasetsRoute.post("/fetch", async (c) => {
+datasetsRoute.post("/fetch", authMiddleware, async (c) => {
     try {
         const validation = FetchDatasetByIdSchema.safeParse(await c.req.json());
+        const userId = c.get("userId");
         if(!validation.success) {
             throw validation.error
         }
         const payload = {
             ...validation.data,
-            userId: "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+            userId
         }
         const dataset = await fetchDatasetById(payload);
         return c.json({ message: "Get dataset by id", dataset });

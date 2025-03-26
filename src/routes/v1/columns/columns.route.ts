@@ -5,6 +5,7 @@ import { addColumnToDataset } from "../../../controllers/columns/columns.control
 import { AddColumnToDatasetError, AddColumnToDatasetInDBError } from "../../../exceptions/column.exceptions"
 import { FetchExistingRowsInDBError, InsertBulkRowItemsInDBError } from "../../../exceptions/row.exceptions"
 import { UpdateColumnCountInDatasetInDBError } from "../../../exceptions/datasets.exceptions"
+import { authMiddleware } from "../../../middleware/auth.middleware"
 
 const columnsRoute = new Hono()
 
@@ -16,15 +17,16 @@ const AddColumnToDatasetSchema = z.object({
 
 export type IAddColumnToDatasetSchema = z.infer<typeof AddColumnToDatasetSchema> & { userId: string }
 
-columnsRoute.post("/add", async (c) => {
+columnsRoute.post("/add", authMiddleware, async (c) => {
     try {
         const validation = AddColumnToDatasetSchema.safeParse(await c.req.json());
+        const userId = c.get("userId");
         if(!validation.success) {
             throw validation.error
         }
         const payload = {
             ...validation.data,
-            userId: "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+            userId
         }
         const column = await addColumnToDataset(payload);
         return c.json({ message: "Column added to dataset successfully", column });

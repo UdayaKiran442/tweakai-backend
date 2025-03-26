@@ -4,6 +4,7 @@ import { z } from "zod"
 import { addRowItemToDataset, addRowToDataset } from "../../../controllers/rows/rows.controller"
 import { AddRowToDatasetError, AddRowToDatasetInDBError, AddRowItemToDatasetError, AddRowItemToDatasetInDBError } from "../../../exceptions/row.exceptions"
 import { UpdateRowCountInDatasetInDBError } from "../../../exceptions/datasets.exceptions"
+import { authMiddleware } from "../../../middleware/auth.middleware"
 
 const rowsRoute = new Hono()
 
@@ -13,7 +14,7 @@ const AddRowToDatasetSchema = z.object({
 
 export type IAddRowToDatasetSchema = z.infer<typeof AddRowToDatasetSchema> & { userId: string }
 
-rowsRoute.post("/add", async (c) => {
+rowsRoute.post("/add", authMiddleware, async (c) => {
     try {
         const validation = AddRowToDatasetSchema.safeParse(await c.req.json())
         if (!validation.success) {
@@ -21,7 +22,7 @@ rowsRoute.post("/add", async (c) => {
         }
         const payload = {
             ...validation.data,
-            userId: "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+            userId: c.get("userId")
         }
         const row = await addRowToDataset(payload)
         return c.json({ message: "Row added to dataset successfully", row })
@@ -44,7 +45,7 @@ const AddRowItemToDatasetSchema = z.object({
 
 export type IAddRowItemToDatasetSchema = z.infer<typeof AddRowItemToDatasetSchema> & { userId: string }
 
-rowsRoute.post("/add/data", async (c) => {
+rowsRoute.post("/add/data", authMiddleware, async (c) => {
     try {
         const validation = AddRowItemToDatasetSchema.safeParse(await c.req.json())
         if (!validation.success) {
@@ -52,7 +53,7 @@ rowsRoute.post("/add/data", async (c) => {
         }
         const payload = {
             ...validation.data,
-            userId: "user-08b2d8d7-df38-4982-b5ed-5bc6f147e8da"
+            userId: c.get("userId")
         }
         const row = await addRowItemToDataset(payload);
         return c.json({ message: "Row added to dataset successfully", row })
