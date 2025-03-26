@@ -1,5 +1,6 @@
 import { Context, Next } from "hono";
 import { jwtDecode } from "jwt-decode";
+
 import { AppVariables } from "../types/app.types";
 
 /**
