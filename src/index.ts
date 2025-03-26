@@ -4,6 +4,7 @@ import { cors } from 'hono/cors'
 
 import { ActiveConfig } from './utils/config.utils'
 import apiRouter from './routes'
+import testRouter from './routes/test/test.route';
 
 const app = new Hono()
 
@@ -16,6 +17,9 @@ app.use(prettyJSON())
 
 // Mount the API router which handles versioning
 app.route("/api", apiRouter)
+
+// Mount test routes
+app.route("/test", testRouter);
 
 app.get('/', (c) => {
   return c.text(`Hello Hono! Welcome to TweakAI. Running in ${env} environment`)
