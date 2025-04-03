@@ -156,7 +156,7 @@ datasetsRoute.post("/delete", authMiddleware, async (c) => {
       userId,
     };
     const dataset = await deleteDataset(payload);
-    return c.json({ message: "Delete deleted successfully", dataset }, 200);
+    return c.json({ message: "Dataset deleted successfully", dataset }, 200);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return c.json({ message: "Validation error", errors: error.errors }, 400);
