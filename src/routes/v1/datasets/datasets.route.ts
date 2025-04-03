@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import {
   createDataset,
+  deleteDataset,
   fetchAllDatasets,
   fetchDatasetById,
 } from "../../../controllers/datasets/datasets.controller";
@@ -13,6 +14,8 @@ import {
   FetchAllDatasetsFromDBError,
   FetchDatasetByIdError,
   FetchDatasetByIdFromDBError,
+  DeleteDatasetError,
+  DeleteDatasetFromDBError,
 } from "../../../exceptions/datasets.exceptions";
 import { authMiddleware } from "../../../middleware/auth.middleware";
 
@@ -131,8 +134,48 @@ datasetsRoute.post("/update/name", (c) => {
   return c.json({ message: "Update dataset name by id" });
 });
 
-datasetsRoute.post("/delete", (c) => {
-  return c.json({ message: "Delete dataset by id" });
+const DeleteDatasetSchema = z
+  .object({
+    datasetId: z.string().describe("Id of the dataset"),
+  })
+  .strict();
+
+export type IDeleteDatasetSchema = z.infer<typeof DeleteDatasetSchema> & {
+  userId: string;
+};
+
+datasetsRoute.post("/delete", authMiddleware, async (c) => {
+  try {
+    const validation = DeleteDatasetSchema.safeParse(await c.req.json());
+    const userId = c.get("userId");
+    if (!validation.success) {
+      throw validation.error;
+    }
+    const payload = {
+      ...validation.data,
+      userId,
+    };
+    const dataset = await deleteDataset(payload);
+    return c.json({ message: "Delete deleted successfully", dataset }, 200);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return c.json({ message: "Validation error", errors: error.errors }, 400);
+    }
+    if (
+      error instanceof DeleteDatasetError ||
+      error instanceof DeleteDatasetFromDBError
+    ) {
+      return c.json(
+        {
+          message: error.message,
+          errorCode: error.errorCode,
+          statusCode: error.statusCode,
+        },
+        500
+      );
+    }
+    return c.json({ message: "Internal server error" }, 500);
+  }
 });
 
 export default datasetsRoute;
