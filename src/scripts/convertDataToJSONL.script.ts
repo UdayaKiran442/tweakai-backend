@@ -3,12 +3,13 @@ import * as path from "path";
 
 import { fetchDatasetById } from "../controllers/datasets/datasets.controller";
 import { useSeoPrompts } from "../prompts/seo/seo.prompts";
+import { ITrainDatasetSchema } from "../routes/v1/model/model.route";
 
-export async function convertDataToJSONL() {
+export async function convertDataToJSONL(payload: ITrainDatasetSchema) {
   // fetch dataset
   const dataset = await fetchDatasetById({
-    datasetId: "dataset-75626bdb-9602-4155-808e-0035f34f6e8e",
-    userId: "user_2unMRKbdYAHWYIIN9ROntWZpWZq",
+    datasetId: payload.datasetId,
+    userId: payload.userId,
   });
 
   const jsonlData: string[] = [];
@@ -51,5 +52,6 @@ export async function convertDataToJSONL() {
     message: `JSONL file created at ${outputPath}`,
     count: jsonlData.length,
     sample: jsonlData.length > 0 ? JSON.parse(jsonlData[0]) : null,
+    outputPath,
   };
 }
