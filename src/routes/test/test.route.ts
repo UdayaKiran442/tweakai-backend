@@ -1,15 +1,13 @@
 import { Hono } from "hono";
 
-import { authMiddleware } from "../../middleware/auth.middleware";
-import { AppVariables } from "../../types/app.types";
+import { convertDataToJSONL } from "../../scripts/convertDataToJSONL.script";
 
 // Create a typed Hono instance
-const testRoute = new Hono<{ Variables: AppVariables }>();
+const testRoute = new Hono();
 
-testRoute.get("/", authMiddleware, async (c) => {
-    // The userId is available from the context
-    const userId = c.get("userId");
-    return c.json({ userId });
+testRoute.get("/", async (c) => {
+  const message = await convertDataToJSONL();
+  return c.json(message);
 });
 
 export default testRoute;
