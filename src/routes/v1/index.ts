@@ -11,6 +11,7 @@ import datasetsRoute from './datasets/datasets.route';
 import rowsRoute from './rows/rows.route';
 import columnsRoute from './columns/columns.route';
 import testRoute from '../../routes/test/test.route';
+import modelRoute from "./model/model.route";
 
 const v1Router = new Hono();
 
@@ -20,5 +21,6 @@ v1Router.route("/datasets", datasetsRoute);
 v1Router.route("/rows", rowsRoute);
 v1Router.route("/columns", columnsRoute);
 v1Router.route("/test", testRoute);
-
+v1Router.route("/model", modelRoute);
+    
 export default v1Router;

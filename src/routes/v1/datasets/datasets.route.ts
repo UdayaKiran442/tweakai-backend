@@ -111,7 +111,7 @@ datasetsRoute.post("/fetch", authMiddleware, async (c) => {
       userId,
     };
     const dataset = await fetchDatasetById(payload);
-    return c.json({ message: "Get dataset by id", dataset });
+    return c.json({ message: "Get dataset by id", dataset, length: dataset.length });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return c.json({ message: "Validation error", errors: error.errors }, 400);

@@ -7,5 +7,8 @@ export async function trainDataset(payload: ITrainDatasetSchema) {
     const response = await convertDataToJSONL(payload);
     // send jsonl file for training to openai
     // TODO: open ai service integration
-  } catch (error) {}
+    return response;
+  } catch (error) {
+    throw error;
+  }
 }

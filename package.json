@@ -6,9 +6,11 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
+    "cheerio": "^1.0.0",
     "dotenv": "^16.4.7",
     "drizzle-kit": "^0.30.5",
     "drizzle-orm": "^0.40.0",
+    "fs": "^0.0.1-security",
     "hono": "^4.7.2",
     "jwt-decode": "^4.0.0",
     "openai": "^4.86.1",
