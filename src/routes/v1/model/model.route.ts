@@ -8,6 +8,7 @@ const modelRoute = new Hono();
 const TrainDatasetSchema = z
   .object({
     datasetId: z.string().describe("Id of the dataset"),
+    context: z.string().describe("Context of the dataset").optional(),
   })
   .strict();
 

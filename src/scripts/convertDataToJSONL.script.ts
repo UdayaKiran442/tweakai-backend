@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 import { fetchDatasetById } from "../controllers/datasets/datasets.controller";
-import { useSeoPrompts } from "../prompts/seo/seo.prompts";
+import { useSeoPrompts } from "../templates/seo/seo.templates";
 import { ITrainDatasetSchema } from "../routes/v1/model/model.route";
 
 export async function convertDataToJSONL(payload: ITrainDatasetSchema) {
@@ -19,7 +19,7 @@ export async function convertDataToJSONL(payload: ITrainDatasetSchema) {
       let userInput = "";
       let output: string[] = [];
       let response: any = {};
-      const context = "these is some context";
+      const context = payload.context;
 
       // First pass to collect all inputs and outputs
       row.items.forEach((item) => {
@@ -33,7 +33,7 @@ export async function convertDataToJSONL(payload: ITrainDatasetSchema) {
       });
 
       // Generate the conversation messages
-      const messages = useSeoPrompts(userInput, context, output, response);
+      const messages = useSeoPrompts(userInput, output, response, context);
 
       // Format exactly as in the example - each message is a separate object in the array
       jsonlData.push(JSON.stringify({ messages }));
@@ -45,7 +45,7 @@ export async function convertDataToJSONL(payload: ITrainDatasetSchema) {
       fs.mkdirSync(outputDir, { recursive: true });
     }
 
-    const outputPath = path.join(outputDir, "seo_datase1.jsonl");
+    const outputPath = path.join(outputDir, "seo_dataset.jsonl");
     fs.writeFileSync(outputPath, jsonlData.join("\n"));
 
     return {
