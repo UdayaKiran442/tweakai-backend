@@ -121,3 +121,15 @@ export const ADD_ROW_ITEM_TO_DATASET_ERROR = {
   errorCode: "ROW_106",
   statusCode: 500,
 };
+
+// open ai service
+export const RETRIEVE_FINETUNING_JOB_ERROR = {
+  message: "Error retrieving finetuning job",
+  errorCode: "OPENAI_101",
+  statusCode: 500,
+};
+export const CREATE_FINETUNING_JOB_ERROR = {
+  message: "Error creating finetuning job",
+  errorCode: "OPENAI_102",
+  statusCode: 500,
+};

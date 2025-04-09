@@ -9,6 +9,9 @@ const TrainDatasetSchema = z
   .object({
     datasetId: z.string().describe("Id of the dataset"),
     context: z.string().describe("Context of the dataset").optional(),
+    description: z.string().describe("Description of the dataset").optional(),
+    name: z.string().describe("Name of the model"),
+    template: z.string().describe("Template of the model"),
   })
   .strict();
 

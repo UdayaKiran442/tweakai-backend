@@ -29,4 +29,5 @@ export const ActiveConfig = {
     NODE_ENV: environment!,
     ENV: process.env.ENV!,
     DATABASE_URL: process.env.DATABASE_URL!,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY!,
 }
