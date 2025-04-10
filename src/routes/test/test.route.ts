@@ -2,6 +2,7 @@ import { Hono } from "hono";
 
 import { convertDataToJSONL } from "../../scripts/convertDataToJSONL.script";
 import { scrapeBlogs } from "../../scripts/scrapeUrls.script";
+import { generateResumeBlogJsonLFile } from "../../scripts/convertJsontoJsonl.script";
 
 // Create a typed Hono instance
 const testRoute = new Hono();
@@ -43,12 +44,12 @@ const blogUrls = [
   "https://www.investopedia.com/terms/f/financial-independence-retire-early-fire.asp",
 ];
 
-const blogUrls1 = blogUrls.slice(0, 10);
-const blogUrls2 = blogUrls.slice(10, 20);
-const blogUrls3 = blogUrls.slice(20, 35);
+const blogUrls1 = blogUrls.slice(0, 11);
+const blogUrls2 = blogUrls.slice(11, 21);
+const blogUrls3 = blogUrls.slice(21, 35);
 
 testRoute.get("/", async (c) => {
-  const message = await scrapeBlogs(blogUrls3);
+  const message = generateResumeBlogJsonLFile();
   return c.json({ message });
 });
 

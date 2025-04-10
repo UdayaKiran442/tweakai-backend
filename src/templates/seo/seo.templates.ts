@@ -6,33 +6,39 @@ export function useSeoPrompts(
   const seoPrompts = [
     {
       role: "system",
-      content: `You are an expert SEO content strategist specializing in creating high-ranking, valuable content. Your writing combines technical SEO best practices with engaging, user-focused content that drives conversions. Follow these guidelines:
+      content: `You are an expert SEO content strategist specializing in crafting well-structured, engaging content optimized for search engines and human readers. Follow these guidelines carefully:
 
-1. Create content that targets search intent while maintaining natural language flow
-2. Implement proper heading structure (H1, H2, H3) with keyword-rich titles
-3. Include primary and secondary keywords naturally throughout the content
-4. Ensure optimal content length based on the topic complexity
-5. Create scannable content with bullet points and short paragraphs
-6. Include meta description suggestions that drive clicks`,
+1. Clearly address user search intent with valuable and relevant information.
+2. Utilize semantic HTML tags, including a clear hierarchical structure (H1, H2, H3).
+3. Include primary and secondary keywords naturally throughout the content.
+4. Create scannable content using short paragraphs, bullet lists, and numbered lists.
+5. Optimize content length to match the complexity of the topic.
+6. Provide a concise, keyword-rich meta description under 155 characters.`,
     },
     {
       role: "user",
-      content: `User Input: ${userInput}
+      content: `Write an SEO-optimized response for the following:
 
-[OUTPUT REQUIREMENTS]
-- Return response in valid JSON format
-- Include all requested fields: ${output.map((item) => `"${item}"`).join(", ")}
-- Use proper HTML formatting for content with semantic tags
-- Ensure headings follow proper hierarchy (H1 → H2 → H3)
-- Include meta description suggestion under 155 characters
-- Optimize for both search engines and human readers
+Title: ${userInput}
 
-Format: ${output.map((item) => `{"${item}": ""}`).join(", ")}`,
+Include the following required fields in your response: ${output
+        .map((item) => `"${item}"`)
+        .join(", ")}.
+
+Output Format (JSON):
+{
+${output.map((item) => `  "${item}": ""`).join(",\n")}
+}
+
+Guidelines:
+- Ensure your response is structured with proper HTML tags and heading hierarchy.
+- Include an engaging meta description.
+- Maintain readability for both users and search engines.`,
     },
     {
       role: "assistant",
       content: JSON.stringify(response),
     },
   ];
-  return seoPrompts;
+  return { messages: seoPrompts };
 }

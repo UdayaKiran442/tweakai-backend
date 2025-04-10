@@ -69,4 +69,32 @@ modelRoute.post("/finetuned/job", authMiddleware, async (c) => {
   }
 });
 
+const GenerateResponseSchema = z
+  .object({
+    modelId: z.string().describe("Id of the model"),
+    userInput: z.object({}).describe("Input data for the model"),
+  })
+  .strict();
+
+export type IGenerateResponseSchema = z.infer<typeof GenerateResponseSchema> & {
+  userId: string;
+};
+
+modelRoute.post("/generate", authMiddleware, async (c) => {
+  try {
+    const validation = GenerateResponseSchema.safeParse(await c.req.json());
+    const userId = c.get("userId");
+    if (!validation.success) {
+      throw validation.error;
+    }
+    const payload = {
+      ...validation.data,
+      userId,
+    };
+    return c.json({ message: "Response generated" }, 200);
+  } catch (error) {
+    return c.json({ message: "Something went wrong", error }, 500);
+  }
+});
+
 export default modelRoute;
