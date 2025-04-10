@@ -44,7 +44,7 @@ export async function convertDataToJSONL(payload: ITrainDatasetSchema) {
       fs.mkdirSync(outputDir, { recursive: true });
     }
 
-    const outputPath = path.join(outputDir, "seo_dataset.jsonl");
+    const outputPath = path.join(outputDir, "seo_dataset1.jsonl");
     fs.writeFileSync(outputPath, jsonlData.join("\n"));
 
     return {

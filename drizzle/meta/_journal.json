@@ -36,6 +36,20 @@
       "when": 1744263697622,
       "tag": "0004_slim_giant_man",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1744266461328,
+      "tag": "0005_numerous_jubilee",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1744267614786,
+      "tag": "0006_powerful_zeigeist",
+      "breakpoints": true
     }
   ]
 }

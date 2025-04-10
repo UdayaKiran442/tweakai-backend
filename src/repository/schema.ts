@@ -51,11 +51,11 @@ export const typeEnum = pgEnum("type", ["input", "output"]);
  */
 export const modelStatusEnum = pgEnum("modelStatus", [
   "pending",
-  "success",
-  "error",
+  "succeeded",
+  "failed",
 ]);
 
-export type IModelStatusEnum = "pending" | "success" | "error";
+export type IModelStatusEnum = "pending" | "succeeded" | "failed";
 
 /**
  * Users table
@@ -189,6 +189,7 @@ export const model = pgTable(
     datasetId: varchar("datasetId", { length: 256 }).notNull(),
     jobId: varchar("jobId", { length: 256 }).notNull(),
     name: varchar("name", { length: 256 }).notNull(),
+    finetunedModel: varchar("finetunedModel", { length: 256 }),
     template: templateEnum().notNull(),
     status: modelStatusEnum().notNull(),
     description: text("description"),
@@ -200,6 +201,8 @@ export const model = pgTable(
       modelIdIdx: uniqueIndex("model_id_idx").on(model.modelId),
       modelUserIdIdx: index("model_userId_idx").on(model.userId),
       modelDatasetIdIdx: index("model_datasetId_idx").on(model.datasetId),
+      modelJobIdIdx: index("model_jobId_idx").on(model.jobId),
+      modelStatusIdx: index("model_status_idx").on(model.status),
     };
   }
 );
@@ -228,3 +231,18 @@ export type RowItemData = {
   columnType: string;
   data: string;
 };
+
+export type IModel = {
+  modelId: string;
+  userId?: string;
+  datasetId?: string;
+  jobId?: string;
+  name?: string;
+  finetunedModel?: string | null;
+  template?: ITemplateEnum;
+  status?: IModelStatusEnum;
+  description?: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+  
