@@ -187,6 +187,7 @@ export const model = pgTable(
     modelId: varchar("modelId", { length: 256 }).primaryKey(),
     userId: varchar("userId", { length: 256 }).notNull(),
     datasetId: varchar("datasetId", { length: 256 }).notNull(),
+    jobId: varchar("jobId", { length: 256 }).notNull(),
     name: varchar("name", { length: 256 }).notNull(),
     template: templateEnum().notNull(),
     status: modelStatusEnum().notNull(),

@@ -12,6 +12,7 @@ export async function addModelInDb(payload: ITrainDatasetSchema) {
       modelId: `model-${generateUuid()}`,
       userId: payload.userId,
       datasetId: payload.datasetId,
+      jobId: payload.jobId,
       name: payload.name,
       template: templateValue,
       description: payload.description,

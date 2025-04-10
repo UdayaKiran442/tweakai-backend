@@ -1,8 +1,7 @@
 export function useSeoPrompts(
   userInput: string,
   output: string[],
-  response: any,
-  context?: string
+  response: any
 ) {
   const seoPrompts = [
     {
@@ -14,16 +13,11 @@ export function useSeoPrompts(
 3. Include primary and secondary keywords naturally throughout the content
 4. Ensure optimal content length based on the topic complexity
 5. Create scannable content with bullet points and short paragraphs
-6. Include meta description suggestions that drive clicks
-7. Return the following in your response: ${output
-        .map((item) => `"${item}"`)
-        .join(", ")}`,
+6. Include meta description suggestions that drive clicks`,
     },
     {
       role: "user",
-      content: `${
-        context ? `Context: ${context}\n\n` : ""
-      }User Input: ${userInput}
+      content: `User Input: ${userInput}
 
 [OUTPUT REQUIREMENTS]
 - Return response in valid JSON format

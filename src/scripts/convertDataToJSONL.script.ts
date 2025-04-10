@@ -19,7 +19,6 @@ export async function convertDataToJSONL(payload: ITrainDatasetSchema) {
       let userInput = "";
       let output: string[] = [];
       let response: any = {};
-      const context = payload.context;
 
       // First pass to collect all inputs and outputs
       row.items.forEach((item) => {
@@ -33,7 +32,7 @@ export async function convertDataToJSONL(payload: ITrainDatasetSchema) {
       });
 
       // Generate the conversation messages
-      const messages = useSeoPrompts(userInput, output, response, context);
+      const messages = useSeoPrompts(userInput, output, response);
 
       // Format exactly as in the example - each message is a separate object in the array
       jsonlData.push(JSON.stringify({ messages }));

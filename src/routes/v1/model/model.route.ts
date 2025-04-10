@@ -8,7 +8,6 @@ const modelRoute = new Hono();
 const TrainDatasetSchema = z
   .object({
     datasetId: z.string().describe("Id of the dataset"),
-    context: z.string().describe("Context of the dataset").optional(),
     description: z.string().describe("Description of the dataset").optional(),
     name: z.string().describe("Name of the model"),
     template: z.string().describe("Template of the model"),
@@ -17,6 +16,7 @@ const TrainDatasetSchema = z
 
 export type ITrainDatasetSchema = z.infer<typeof TrainDatasetSchema> & {
   userId: string;
+  jobId: string;
 };
 
 modelRoute.post("/dataset/training", authMiddleware, async (c) => {
@@ -29,6 +29,7 @@ modelRoute.post("/dataset/training", authMiddleware, async (c) => {
     const payload = {
       ...validation.data,
       userId,
+      jobId: "",
     };
     const response = await trainDataset(payload);
     return c.json({ message: "Dataset training in progress", response });
