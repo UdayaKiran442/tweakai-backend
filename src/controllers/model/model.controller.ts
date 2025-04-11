@@ -6,7 +6,7 @@ import {
   updateModelInDB,
 } from "../../repository/model/model.repository";
 import { ITrainDatasetSchema } from "../../routes/v1/model/model.route";
-import { convertDataToJSONL } from "../../scripts/convertDataToJSONL.script";
+import { convertDataToJSONLScript } from "../../scripts/convertDataToJSONL.script";
 import {
   createFinetuningJob,
   retrieveFinetuningJob,
@@ -16,7 +16,7 @@ export async function trainDataset(payload: ITrainDatasetSchema) {
   let outputPath = "";
   try {
     // call the script to convert dataset to jsonl
-    const response = await convertDataToJSONL(payload);
+    const response = await convertDataToJSONLScript(payload);
     outputPath = response.outputPath;
     // send jsonl file for training to openai
     const job = await createFinetuningJob(response.outputPath);

@@ -33,6 +33,11 @@ export async function createFinetuningJob(filePath: string) {
     return await openai.fineTuning.jobs.create({
       training_file: file.id,
       model: "gpt-4o-mini-2024-07-18",
+      hyperparameters: {
+        batch_size: 4,
+        n_epochs: 3,
+        learning_rate_multiplier: 0.02,
+      },
     });
   } catch (error) {
     throw new CreateFinetuningJobError(
@@ -54,3 +59,5 @@ export async function uploadTrainingFile(filePath: string) {
     throw error;
   }
 }
+
+export default openai;

@@ -8,12 +8,18 @@ export function generateResumeBlogJsonLFile() {
   let fileContent = "";
   for (const data of resumeBlogData) {
     let userInput = "";
-    userInput += `${data["Meta Title"]}\n${data["Audience"]}`;
+    userInput += `${data["Meta Title"]}\n${data["Audience"]}\n${data["Stage"]}`;
 
-    const response = useSeoPrompts(userInput, ["metaDescription", "article"], {
-      article: data["Content"],
-      metaDescription: data["Meta Description"],
-    });
+    const response = useSeoPrompts(
+      userInput,
+      ["metaDescription", "article", "urlSlug"],
+      {
+        article: data["Content"],
+        metaDescription: data["Meta Description"],
+        urlSlug: data["URL Slug"],
+      },
+      "resume"
+    );
     fileContent += JSON.stringify(response) + "\n";
   }
   // write file content to a JSONL file which is present in same folder

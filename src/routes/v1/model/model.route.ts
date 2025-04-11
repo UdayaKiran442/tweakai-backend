@@ -14,6 +14,7 @@ const TrainDatasetSchema = z
     description: z.string().describe("Description of the dataset").optional(),
     name: z.string().describe("Name of the model"),
     template: z.string().describe("Template of the model"),
+    domain: z.string().describe("Domain of the model"),
   })
   .strict();
 

@@ -1,44 +1,47 @@
 export function useSeoPrompts(
   userInput: string,
   output: string[],
-  response: any
+  response: any,
+  domain: string
 ) {
   const seoPrompts = [
     {
       role: "system",
-      content: `You are an expert SEO content strategist specializing in crafting well-structured, engaging content optimized for search engines and human readers. Follow these guidelines carefully:
-
-1. Clearly address user search intent with valuable and relevant information.
-2. Utilize semantic HTML tags, including a clear hierarchical structure (H1, H2, H3).
-3. Include primary and secondary keywords naturally throughout the content.
-4. Create scannable content using short paragraphs, bullet lists, and numbered lists.
-5. Optimize content length to match the complexity of the topic.
-6. Provide a concise, keyword-rich meta description under 155 characters.`,
+      content: `You are a professional SEO content writer and optimization expert. Your task is to write a ${domain}-focused article based on the provided userInput. Ensure the content is SEO-optimized, engaging, and tailored to the audience's needs at the given stage. `,
     },
     {
       role: "user",
-      content: `Write an SEO-optimized response for the following:
-
-Title: ${userInput}
-
-Include the following required fields in your response: ${output
-        .map((item) => `"${item}"`)
-        .join(", ")}.
-
-Output Format (JSON):
-{
-${output.map((item) => `  "${item}": ""`).join(",\n")}
-}
-
-Guidelines:
-- Ensure your response is structured with proper HTML tags and heading hierarchy.
-- Include an engaging meta description.
-- Maintain readability for both users and search engines.`,
+      content: `User Input: ${userInput}`,
     },
     {
       role: "assistant",
-      content: JSON.stringify(response),
+      content:
+        "Any important instructions you want me to follow while writing the article?",
+    },
+    {
+      role: "user",
+      content: `[IMPORTANT]
+            1. Write a ${domain}-focused article that is engaging. \n\n
+            2. Ensure the content is SEO-optimized and follows best practices for online readability. \n\n
+            3. Adhere to the specified word limit and maintain a professional tone throughout the article. \n\n
+            4. Include relevant keywords and phrases to enhance the article's search engine visibility. \n\n
+            5. Provide a well-structured article that addresses the reader's needs and provides valuable insights. \n\n
+            6. Ensure proper spacing between paragraphs and use subheadings to improve readability. \n\n`,
+    },
+    {
+      role: "assistant",
+      content: "How would you like me to format the response?",
+    },
+    {
+      role: "user",
+      content: `Do not include any explanations, only provide a RFC8259 compliant JSON response following this format without deviation. {${output
+        .map((item) => `"${item}": ""`)
+        .join(",\n")}}`,
+    },
+    {
+      role: "assistant",
+      content: response,
     },
   ];
-  return { messages: seoPrompts };
+  return seoPrompts;
 }

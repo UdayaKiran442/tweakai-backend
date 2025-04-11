@@ -29,4 +29,17 @@ app.get('/health-check', (c) => {
   return c.text(`Server is healthy and running in ${env} environment`)
 })
 
+// Configure Bun server with increased timeout
+const port = process.env.PORT || 3000;
+
+// This will run when the file is executed directly
+Bun.serve({
+  fetch: app.fetch,
+  port: Number(port),
+  // Increase the idle timeout to 255  for long-running requests like OpenAI API calls
+  idleTimeout: 255, // 255 in milliseconds
+});
+
+console.log(`Server running at http://localhost:${port}`);
+
 export default app

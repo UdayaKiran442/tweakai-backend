@@ -5,7 +5,7 @@ import { fetchDatasetById } from "../controllers/datasets/datasets.controller";
 import { useSeoPrompts } from "../templates/seo/seo.templates";
 import { ITrainDatasetSchema } from "../routes/v1/model/model.route";
 
-export async function convertDataToJSONL(payload: ITrainDatasetSchema) {
+export async function convertDataToJSONLScript(payload: ITrainDatasetSchema) {
   try {
     // fetch dataset
     const dataset = await fetchDatasetById({
@@ -32,7 +32,12 @@ export async function convertDataToJSONL(payload: ITrainDatasetSchema) {
       });
 
       // Generate the conversation messages
-      const messages = useSeoPrompts(userInput, output, response);
+      const messages = useSeoPrompts(
+        userInput,
+        output,
+        response,
+        payload.domain
+      );
 
       // Format exactly as in the example - each message is a separate object in the array
       jsonlData.push(JSON.stringify({ messages }));
