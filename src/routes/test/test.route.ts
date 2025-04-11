@@ -12,7 +12,6 @@ testRoute.get("/", async (c) => {
     jobId: "",
     userId: "user_2unMRKbdYAHWYIIN9ROntWZpWZq",
   });
-  console.log(response);
   return c.json(response);
 });
 

@@ -60,4 +60,23 @@ export async function uploadTrainingFile(filePath: string) {
   }
 }
 
+export async function generateResponseFromOpenAI(payload: {
+  prompt: any;
+  model: string;
+}) {
+  try {
+    const response = await openai.chat.completions.create({
+      model: payload.model,
+      messages: payload.prompt,
+      response_format: {
+        type: "json_object",
+      },
+      temperature: 0.5,
+    });
+    return response.choices[0].message.content as string;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export default openai;

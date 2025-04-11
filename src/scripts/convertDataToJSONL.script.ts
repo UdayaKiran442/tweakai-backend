@@ -26,7 +26,6 @@ export async function convertDataToJSONLScript(payload: ITrainDatasetSchema) {
           userInput += `${item.columnName}: ${item.data}\n`;
         }
         if (item.columnType === "output") {
-          output.push(item.columnName);
           response[item.columnName] = item.data;
         }
       });
