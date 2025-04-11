@@ -35,7 +35,7 @@ export async function convertDataToJSONLScript(payload: ITrainDatasetSchema) {
       const messages = useSeoPrompts(
         userInput,
         output,
-        response,
+        JSON.stringify(response),
         payload.domain
       );
 
@@ -49,7 +49,7 @@ export async function convertDataToJSONLScript(payload: ITrainDatasetSchema) {
       fs.mkdirSync(outputDir, { recursive: true });
     }
 
-    const outputPath = path.join(outputDir, "seo_dataset1.jsonl");
+    const outputPath = path.join(outputDir, "seo_dataset2.jsonl");
     fs.writeFileSync(outputPath, jsonlData.join("\n"));
 
     return {

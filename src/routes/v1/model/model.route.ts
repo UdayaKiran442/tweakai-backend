@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 import { authMiddleware } from "../../../middleware/auth.middleware";
 import {
+  generateResponse,
   getFinetuningJob,
   trainDataset,
 } from "../../../controllers/model/model.controller";
@@ -73,7 +74,7 @@ modelRoute.post("/finetuned/job", authMiddleware, async (c) => {
 const GenerateResponseSchema = z
   .object({
     modelId: z.string().describe("Id of the model"),
-    userInput: z.object({}).describe("Input data for the model"),
+    userInput: z.string().describe("Input data for the model"),
   })
   .strict();
 
@@ -92,7 +93,8 @@ modelRoute.post("/generate", authMiddleware, async (c) => {
       ...validation.data,
       userId,
     };
-    return c.json({ message: "Response generated" }, 200);
+    const response = await generateResponse(payload);
+    return c.json({ message: "Response generated", response }, 200);
   } catch (error) {
     return c.json({ message: "Something went wrong", error }, 500);
   }

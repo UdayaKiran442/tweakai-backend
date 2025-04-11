@@ -66,3 +66,12 @@ export async function getModelByJobIdInDB(jobId: string) {
     throw error;
   }
 }
+
+export async function getModelByModelIdInDB(modelId: string) {
+  try {
+    const trainedModel = await db.select().from(model).where(eq(model.modelId, modelId));
+    return trainedModel[0];
+  } catch (error) {
+    throw error;
+  }
+}
