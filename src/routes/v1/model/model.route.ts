@@ -6,6 +6,18 @@ import {
   getFinetuningJob,
   trainDataset,
 } from "../../../controllers/model/model.controller";
+import { ConvertDataToJSONLScriptError } from "../../../exceptions/script.exceptions";
+import { FetchDatasetByIdError } from "../../../exceptions/datasets.exceptions";
+import {
+  CreateFinetuningJobError,
+  RetrieveFinetuningJobFromOpenAIError,
+} from "../../../exceptions/openai.exceptions";
+import {
+  AddModelInDbError,
+  GetModelByJobIdInDbError,
+  TrainDatasetError,
+  UpdateModelInDbError,
+} from "../../../exceptions/modal.exceptions";
 
 const modelRoute = new Hono();
 
@@ -15,7 +27,11 @@ const TrainDatasetSchema = z
     description: z.string().describe("Description of the dataset").optional(),
     name: z.string().describe("Name of the model"),
     template: z.string().describe("Template of the model"),
-    domain: z.string().describe("Domain of the model"),
+    domain: z
+      .string()
+      .describe(
+        "Domain of the model. Example: resume, finance, interview tips, etc."
+      ),
   })
   .strict();
 
@@ -39,6 +55,18 @@ modelRoute.post("/dataset/training", authMiddleware, async (c) => {
     const response = await trainDataset(payload);
     return c.json({ message: "Dataset training in progress", response });
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return c.json({ message: "Invalid input", error }, 400);
+    }
+    if (
+      error instanceof ConvertDataToJSONLScriptError ||
+      error instanceof FetchDatasetByIdError ||
+      error instanceof CreateFinetuningJobError ||
+      error instanceof AddModelInDbError ||
+      error instanceof TrainDatasetError
+    ) {
+      return c.json({ message: error.message, error }, 500);
+    }
     return c.json({ message: "Something went wrong", error }, 500);
   }
 });
@@ -67,6 +95,16 @@ modelRoute.post("/finetuned/job", authMiddleware, async (c) => {
     const response = await getFinetuningJob(payload.jobId);
     return c.json({ message: "Dataset training in progress", response }, 200);
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return c.json({ message: "Invalid input", error }, 400);
+    }
+    if (
+      error instanceof RetrieveFinetuningJobFromOpenAIError ||
+      error instanceof GetModelByJobIdInDbError ||
+      error instanceof UpdateModelInDbError
+    ) {
+      return c.json({ message: error.message, error }, 500);
+    }
     return c.json({ message: "Something went wrong", error }, 500);
   }
 });

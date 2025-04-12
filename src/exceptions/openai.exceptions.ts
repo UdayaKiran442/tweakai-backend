@@ -1,4 +1,4 @@
-export class RetrieveFinetuningJobError extends Error {
+export class RetrieveFinetuningJobFromOpenAIError extends Error {
   statusCode: number;
   errorCode: string;
 

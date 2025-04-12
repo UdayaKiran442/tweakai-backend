@@ -123,7 +123,7 @@ export const ADD_ROW_ITEM_TO_DATASET_ERROR = {
 };
 
 // open ai service
-export const RETRIEVE_FINETUNING_JOB_ERROR = {
+export const RETRIEVE_FINETUNING_JOB_FROM_OPENAI_ERROR = {
   message: "Error retrieving finetuning job",
   errorCode: "OPENAI_101",
   statusCode: 500,
@@ -131,5 +131,44 @@ export const RETRIEVE_FINETUNING_JOB_ERROR = {
 export const CREATE_FINETUNING_JOB_ERROR = {
   message: "Error creating finetuning job",
   errorCode: "OPENAI_102",
+  statusCode: 500,
+};
+
+// script
+export const CONVERT_DATA_TO_JSONL_SCRIPT_ERROR = {
+  message: "Error converting data to JSONL",
+  errorCode: "SCRIPT_101",
+  statusCode: 500,
+};
+
+// modal
+export const ADD_MODEL_IN_DB_ERROR = {
+  message: "Error adding model to database",
+  errorCode: "MODEL_101",
+  statusCode: 500,
+};
+export const TRAIN_DATASET_ERROR = {
+  message: "Error training dataset",
+  errorCode: "MODEL_102",
+  statusCode: 500,
+};
+export const GENERATE_RESPONSE_ERROR = {
+  message: "Error generating response",
+  errorCode: "MODEL_103",
+  statusCode: 500,
+};
+export const GET_MODEL_BY_JOB_ID_IN_DB_ERROR = {
+  message: "Error getting model by job id in database",
+  errorCode: "MODEL_104",
+  statusCode: 500,
+};
+export const UPDATE_MODEL_IN_DB_ERROR = {
+  message: "Error updating model in database",
+  errorCode: "MODEL_105",
+  statusCode: 500,
+};
+export const GET_FINETUNING_JOB_ERROR = {
+  message: "Error getting finetuning job",
+  errorCode: "MODEL_106",
   statusCode: 500,
 };

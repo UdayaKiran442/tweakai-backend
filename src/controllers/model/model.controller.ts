@@ -14,10 +14,27 @@ import { convertDataToJSONLScript } from "../../scripts/convertDataToJSONL.scrip
 import {
   createFinetuningJob,
   generateResponseFromOpenAI,
-  retrieveFinetuningJob,
+  retrieveFinetuningJobFromOpenAI,
 } from "../../service/openai/openai.service";
 import { fetchDatasetById } from "../datasets/datasets.controller";
 import { seoPrompt } from "../../constants/prompt.constants";
+import { ConvertDataToJSONLScriptError } from "../../exceptions/script.exceptions";
+import { FetchDatasetByIdError } from "../../exceptions/datasets.exceptions";
+import {
+  CreateFinetuningJobError,
+  RetrieveFinetuningJobFromOpenAIError,
+} from "../../exceptions/openai.exceptions";
+import {
+  AddModelInDbError,
+  GetFinetuningJobError,
+  GetModelByJobIdInDbError,
+  TrainDatasetError,
+  UpdateModelInDbError,
+} from "../../exceptions/modal.exceptions";
+import {
+  GET_FINETUNING_JOB_ERROR,
+  TRAIN_DATASET_ERROR,
+} from "../../constants/error.constants";
 
 export async function trainDataset(payload: ITrainDatasetSchema) {
   let outputPath = "";
@@ -32,9 +49,21 @@ export async function trainDataset(payload: ITrainDatasetSchema) {
     const newModel = await addModelInDb(payload);
     return { response, newModel, job: job._request_id };
   } catch (error) {
-    throw error;
+    if (
+      error instanceof ConvertDataToJSONLScriptError ||
+      error instanceof FetchDatasetByIdError ||
+      error instanceof CreateFinetuningJobError ||
+      error instanceof AddModelInDbError
+    ) {
+      throw error;
+    }
+    throw new TrainDatasetError(
+      TRAIN_DATASET_ERROR.message,
+      TRAIN_DATASET_ERROR.errorCode,
+      TRAIN_DATASET_ERROR.statusCode
+    );
   } finally {
-    // delete jsonl file
+    // delete jsonl file after sent for training
     fs.unlinkSync(outputPath);
   }
 }
@@ -42,10 +71,10 @@ export async function trainDataset(payload: ITrainDatasetSchema) {
 export async function getFinetuningJob(jobId: string) {
   try {
     // get job from openai
-    const job = await retrieveFinetuningJob(jobId);
+    const job = await retrieveFinetuningJobFromOpenAI(jobId);
+    const model = await getModelByJobIdInDB(jobId);
     // update model status in db
     if (job.status === "succeeded") {
-      const model = await getModelByJobIdInDB(jobId);
       await updateModelInDB({
         modelId: model[0].modelId,
         status: job.status,
@@ -54,13 +83,24 @@ export async function getFinetuningJob(jobId: string) {
     }
     if (job.status === "failed") {
       await updateModelInDB({
-        modelId: jobId,
+        modelId: model[0].modelId,
         status: job.status,
       });
     }
     return job;
   } catch (error) {
-    throw error;
+    if (
+      error instanceof RetrieveFinetuningJobFromOpenAIError ||
+      error instanceof GetModelByJobIdInDbError ||
+      error instanceof UpdateModelInDbError
+    ) {
+      throw error;
+    }
+    throw new GetFinetuningJobError(
+      GET_FINETUNING_JOB_ERROR.message,
+      GET_FINETUNING_JOB_ERROR.errorCode,
+      GET_FINETUNING_JOB_ERROR.statusCode
+    );
   }
 }
 

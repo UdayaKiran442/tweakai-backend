@@ -4,6 +4,9 @@ import * as path from "path";
 import { fetchDatasetById } from "../controllers/datasets/datasets.controller";
 import { useSeoPrompts } from "../templates/seo/seo.templates";
 import { ITrainDatasetSchema } from "../routes/v1/model/model.route";
+import { FetchDatasetByIdError } from "../exceptions/datasets.exceptions";
+import { ConvertDataToJSONLScriptError } from "../exceptions/script.exceptions";
+import { CONVERT_DATA_TO_JSONL_SCRIPT_ERROR } from "../constants/error.constants";
 
 export async function convertDataToJSONLScript(payload: ITrainDatasetSchema) {
   try {
@@ -23,9 +26,12 @@ export async function convertDataToJSONLScript(payload: ITrainDatasetSchema) {
       // First pass to collect all inputs and outputs
       row.items.forEach((item) => {
         if (item.columnType === "input") {
+          // this user input will be used in prompt
           userInput += `${item.columnName}: ${item.data}\n`;
         }
         if (item.columnType === "output") {
+          // this output will be used in prompt, array will be organized in prompt as string
+          output.push(item.columnName);
           response[item.columnName] = item.data;
         }
       });
@@ -59,6 +65,13 @@ export async function convertDataToJSONLScript(payload: ITrainDatasetSchema) {
       outputPath,
     };
   } catch (error) {
-    throw error;
+    if (error instanceof FetchDatasetByIdError) {
+      throw error;
+    }
+    throw new ConvertDataToJSONLScriptError(
+      CONVERT_DATA_TO_JSONL_SCRIPT_ERROR.message,
+      CONVERT_DATA_TO_JSONL_SCRIPT_ERROR.errorCode,
+      CONVERT_DATA_TO_JSONL_SCRIPT_ERROR.statusCode
+    );
   }
 }
